@@ -1,4 +1,7 @@
-import template.*;
+package parking;
+
+import parking.Parking;
+import parking.template.*;
 
 public class Verificator {
 

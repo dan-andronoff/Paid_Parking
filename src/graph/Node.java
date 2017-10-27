@@ -1,4 +1,6 @@
-import template.Template;
+package graph;
+
+import parking.template.Template;
 
 import java.util.ArrayList;
 
@@ -15,7 +17,7 @@ public class Node {
         j = 0;
     }
 
-    public Node(Template type, int i, int j, Integer number) {
+    public Node(Template type, int i, int j) {
         adjacentNodes= new ArrayList<>();
         this.type = type;
         this.i = i;

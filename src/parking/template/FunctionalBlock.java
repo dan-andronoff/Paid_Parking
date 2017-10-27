@@ -1,4 +1,4 @@
-package template;
+package parking.template;
 
 import javafx.scene.canvas.GraphicsContext;
 

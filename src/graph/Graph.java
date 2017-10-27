@@ -1,29 +1,30 @@
-import template.*;
+package graph;
 
-import javafx.scene.canvas.Canvas;
+import parking.Parking;
+import parking.template.*;
+
 import java.util.*;
 
 public class Graph {
     private ArrayList<Node> nodesList = new ArrayList<>();
 
     public Graph(Parking parking) {
-      Integer number = 0;
         for (int i=0; i<parking.getFunctionalBlockH();i++) {
             for (int j=0; j<parking.getFunctionalBlockV(); j++) {
                 if (parking.getParking()[i][j] instanceof Road){
-                    Node node = new Node (Template.Road, i, j, number++);
+                    Node node = new Node(Template.Road, i, j);
                     nodesList.add(node);
                 }
                 if (parking.getParking()[i][j] instanceof ParkingPlace){
-                    Node node = new Node (Template.ParkingPlace, i, j, number++);
+                    Node node = new Node(Template.ParkingPlace, i, j);
                     nodesList.add(node);
                 }
                 if (parking.getParking()[i][j] instanceof Entry){
-                    Node node = new Node (Template.Entry, i, j, number++);
+                    Node node = new Node(Template.Entry, i, j);
                     nodesList.add(node);
                 }
                 if (parking.getParking()[i][j] instanceof Departure){
-                    Node node = new Node (Template.Departure, i, j, number++);
+                    Node node = new Node(Template.Departure, i, j);
                     nodesList.add(node);
                 }
             }
@@ -60,20 +61,19 @@ public class Graph {
     }
 
 
-    public boolean isReachable(Node first, Node second) {
-        if (first.equals(second))
+    public boolean isReachable(Node first, Node last) {
+        if (first.equals(last))
             return true;
         Queue<Node> queue = new LinkedList<>();
-        HashSet<Node> nodes = new HashSet<>(nodesList);
+        ArrayList<Node> nodes = new ArrayList<>(nodesList);
         queue.offer(first);
         while (!queue.isEmpty()) {
             Node currentNode = queue.remove();
             if (nodes.contains(currentNode)) {
                 nodes.remove(currentNode);
-                System.out.println("*****"+ currentNode.getAdjacentNodes());
                 for (Node node : currentNode.getAdjacentNodes()
                         ) {
-                    if (node.equals(second))
+                    if (node.equals(last))
                         return true;
                     queue.offer(node);
                 }
@@ -86,7 +86,7 @@ public class Graph {
         Parking parking = new Parking(3, 3, null, 0);
         parking.setParking(new FunctionalBlock[][]{
                 new FunctionalBlock[]{new ParkingPlace(null), new ParkingPlace(null), new ParkingPlace(null)},
-                new FunctionalBlock[]{new Lawn(null), new Road(null), new Lawn(null)},
+                new FunctionalBlock[]{new Lawn(null), new Lawn(null), new Lawn(null)},
                 new FunctionalBlock[]{new Entry(null), new Departure(null), new Lawn(null)}
         });
         Graph g = new Graph(parking);

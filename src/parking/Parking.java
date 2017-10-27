@@ -1,6 +1,8 @@
+package parking;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import template.*;
+import parking.template.*;
 
 public class Parking {
 

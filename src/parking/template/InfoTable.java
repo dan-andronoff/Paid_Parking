@@ -1,8 +1,7 @@
-package template;
+package parking.template;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import template.FunctionalBlock;
 
 public class InfoTable extends FunctionalBlock {
 

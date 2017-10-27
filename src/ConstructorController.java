@@ -6,7 +6,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import template.Template;
+import parking.Parking;
+import parking.template.Template;
 
 import java.io.IOException;
 
