@@ -63,4 +63,8 @@ public class Node {
                     &&(node.type==type);
         } else return false;
     }
+    @Override
+    public String toString(){
+        return i+ " " + j;
+    }
 }

@@ -3,6 +3,7 @@ package graph;
 import parking.Parking;
 import parking.template.*;
 
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.util.*;
 
 public class Graph {
@@ -62,8 +63,6 @@ public class Graph {
 
 
     public boolean isReachable(Node first, Node last) {
-        if (first.equals(last))
-            return true;
         Queue<Node> queue = new LinkedList<>();
         ArrayList<Node> nodes = new ArrayList<>(nodesList);
         queue.offer(first);
@@ -76,6 +75,35 @@ public class Graph {
                     if (node.equals(last))
                         return true;
                     queue.offer(node);
+                }
+            }
+        }
+        return false;
+    }
+
+    public List<Node> getPath(Node first, Node last){
+        ArrayList<Node> nodes = new ArrayList<>(nodesList);
+        ArrayList<Node> path = new ArrayList<>();
+        nodes.remove(first);
+        if (getNext(nodes, path, first.getAdjacentNodes(), last)) {
+            path.add(0, first);
+            return path;
+        }
+        else return null;
+    }
+
+    private boolean getNext(List<Node> nodes, List<Node> path, ArrayList<Node> adjacentNodes, Node last){
+        if (adjacentNodes.contains(last)){
+            path.add(0, last);
+            return true;
+        }
+        for (Node currentNode: adjacentNodes
+             ) {
+            if (nodes.contains(currentNode)) {
+                nodes.remove(currentNode);
+                if (getNext(nodes, path, currentNode.getAdjacentNodes(), last)){
+                    path.add(0, currentNode);
+                    return true;
                 }
             }
         }
@@ -95,6 +123,13 @@ public class Graph {
                 System.out.print(g.isReachable(g.nodesList.get(i), g.nodesList.get(j)) + " ");
             }
             System.out.println();
+        }
+
+        for (int i=0; i<g.nodesList.size(); i++) {
+            for (int j = 0; j < g.nodesList.size(); j++) {
+                System.out.print(g.getPath(g.nodesList.get(i), g.nodesList.get(j)) + " ");
+            }
+            System.out.println("***");
         }
     }
 }
