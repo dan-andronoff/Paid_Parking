@@ -11,17 +11,13 @@ public class Parking {
     private int size;
     private int functionalBlockH;
     private int functionalBlockV;
-    //DELETE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    private final double HORIZONTAL_MARGIN=0;
-    private final double VERTICAL_MARGIN=0;
-    //DELETE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private final double HORIZONTAL_MARGIN;
+    private final double VERTICAL_MARGIN;
     private final double HIGHWAY_SIZE;
 
     public FunctionalBlock[][] getParking() {
         return parking;
     }
-    //DELETE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public void setParking(FunctionalBlock[][] parking){this.parking=parking;}
 
     public int getFunctionalBlockH() {
         return functionalBlockH;
@@ -38,8 +34,8 @@ public class Parking {
         this.functionalBlockH = functionalBlockH;
         this.functionalBlockV = functionalBlockV;
         HIGHWAY_SIZE = 2 * size;
-        //HORIZONTAL_MARGIN = graphicsContext.getCanvas().getWidth() / 2 - functionalBlockH * size / 2;
-        //VERTICAL_MARGIN = graphicsContext.getCanvas().getHeight() / 2 - functionalBlockV * size / 2 - HIGHWAY_SIZE / 2 - 1;
+        HORIZONTAL_MARGIN = graphicsContext.getCanvas().getWidth() / 2 - functionalBlockH * size / 2;
+        VERTICAL_MARGIN = graphicsContext.getCanvas().getHeight() / 2 - functionalBlockV * size / 2 - HIGHWAY_SIZE / 2 - 1;
     }
 
     public Parking(int functionalBlockH, int functionalBlockV, GraphicsContext graphicsContext, int size, Parking oldParking) {

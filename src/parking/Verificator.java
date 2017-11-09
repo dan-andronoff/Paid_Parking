@@ -1,11 +1,31 @@
 package parking;
 
-import parking.Parking;
+import graph.Graph;
+import graph.Node;
 import parking.template.*;
+
+import java.util.ArrayList;
 
 public class Verificator {
 
-    public static boolean hasUniqueInfoTable(Parking parking) {
+    public static ArrayList<VerificatorError> checkAll(Parking parking){
+        ArrayList<VerificatorError> errors = new ArrayList<>();
+        if(!hasUniqueCashBox(parking)){
+            errors.add(VerificatorError.MultiCashBox);
+        }
+        if(!hasUniqueInfoTable(parking)){
+            errors.add(VerificatorError.MultiInfoTable);
+        }
+        if(!isEntryDeparturePlacedCorrect(parking)){
+            errors.add(VerificatorError.IncorrectEntryDeparturePlacement);
+        }
+        if(!checkPaths(parking)){
+            errors.add(VerificatorError.UnrelatedGraph);
+        }
+        return errors;
+    }
+
+    private static boolean hasUniqueInfoTable(Parking parking) {
         int count = 0;
         for (FunctionalBlock[] blocks : parking.getParking()) {
             for (FunctionalBlock block : blocks) {
@@ -19,7 +39,7 @@ public class Verificator {
         return count == 1;
     }
 
-    public static boolean hasUniqueCashBox(Parking parking) {
+    private static boolean hasUniqueCashBox(Parking parking) {
         int count = 0;
         for (FunctionalBlock[] blocks : parking.getParking()) {
             for (FunctionalBlock block : blocks) {
@@ -33,7 +53,7 @@ public class Verificator {
         return count == 1;
     }
 
-    public static boolean isEntryDeparturePlacedCorrect(Parking parking) {
+    private static boolean isEntryDeparturePlacedCorrect(Parking parking) {
         int countEntry = 0, countDeparture = 0;
         int jEntry = 0, iEntry = 0, jDeparture = 0, iDeparture = 0;
         for (int i = 0; i < parking.getFunctionalBlockH(); i++) {
@@ -60,8 +80,17 @@ public class Verificator {
         }
         return ((countEntry == 1) && (countDeparture == 1) && (iEntry < iDeparture)
                 && (jEntry == parking.getFunctionalBlockV() - 1)
-                && (jDeparture == parking.getFunctionalBlockV()));
+                && (jDeparture == parking.getFunctionalBlockV()-1));
     }
 
+    private static boolean checkPaths(Parking parking){
+        Graph graph = new Graph(parking);
+        for (Node node: graph) {
+            if (!graph.isReachable(graph.getEntry(), node)){
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

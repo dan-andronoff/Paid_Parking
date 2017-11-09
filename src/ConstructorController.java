@@ -3,15 +3,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import parking.Parking;
+import parking.Verificator;
+import parking.VerificatorError;
 import parking.template.Template;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ConstructorController {
+
+    private Stage stage;
     private Template template;
     private Parking parking;
     private int size;
@@ -21,6 +28,9 @@ public class ConstructorController {
         graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
     }
 
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
     @FXML
     Pane centerPane;
 
@@ -30,7 +40,7 @@ public class ConstructorController {
         size = 50;
         Canvas canvas = new Canvas(815, 575);
         graphicsContext = canvas.getGraphicsContext2D();
-        parking = new Parking(0, 0, graphicsContext, 0);
+        parking = new Parking(4, 4, graphicsContext, size);
         canvas.setOnMouseClicked(event -> {
                     if (template!=Template.Null) {
                         int x = (int) event.getX();
@@ -43,6 +53,9 @@ public class ConstructorController {
                 }
         );
         centerPane.getChildren().add(canvas);
+        parking.drawMarkup();
+        parking.drawHighway();
+        parking.drawFunctionalBlocks();
     }
 
     @FXML
@@ -98,5 +111,46 @@ public class ConstructorController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void onSave(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.showOpenDialog(stage);
+    }
+
+    @FXML
+    public void onCheck(){
+        ArrayList<VerificatorError> errorList = Verificator.checkAll(parking);
+        if (errorList.size()==0){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("");
+            alert.setHeaderText("");
+            alert.setContentText("Топология соответствует правилам организации парковки!");
+            alert.showAndWait();
+        }
+        else{
+            StringBuilder message = new StringBuilder();
+            if (errorList.contains(VerificatorError.MultiCashBox)){
+                message.append("\n - На парковке должна быть одна касса.");
+            }
+            if (errorList.contains(VerificatorError.MultiInfoTable)){
+                message.append("\n - На парковке должно быть одно информационное табло.");
+            }
+            if (errorList.contains(VerificatorError.IncorrectEntryDeparturePlacement)){
+                message.append("\n - Въезд и выезд должны прилегать к шоссе. Выезд должен находиться дальше по ходу движения автомобилей по шоссе.");
+            }
+            if (errorList.contains(VerificatorError.UnrelatedGraph)){
+                message.append("\n - Требуется наличие пути от въезда до всех парковочных мест и дорог.");
+            }
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("");
+            alert.setHeaderText("");
+            alert.setContentText("Топология не соответствует правилам организации парковки: " + message.toString());
+            alert.showAndWait();
+        }
+
+    }
+
 
 }

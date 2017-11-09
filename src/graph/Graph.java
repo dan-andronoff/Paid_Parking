@@ -6,10 +6,27 @@ import parking.template.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.util.*;
 
-public class Graph {
+public class Graph implements Iterable<Node> {
+
+    private Node entry;
+    private Node departure;
     private ArrayList<Node> nodesList = new ArrayList<>();
 
-    public Graph(Parking parking) {
+    public Node getEntry() {
+        return entry;
+    }
+
+
+    public Node getDeparture() {
+        return departure;
+    }
+
+    public ArrayList<Node> getNodesList() {
+        return nodesList;
+    }
+
+
+    public Graph(Parking parking) {  //Построение графа по парковке
         for (int i=0; i<parking.getFunctionalBlockH();i++) {
             for (int j=0; j<parking.getFunctionalBlockV(); j++) {
                 if (parking.getParking()[i][j] instanceof Road){
@@ -22,10 +39,12 @@ public class Graph {
                 }
                 if (parking.getParking()[i][j] instanceof Entry){
                     Node node = new Node(Template.Entry, i, j);
+                    this.entry = node;
                     nodesList.add(node);
                 }
                 if (parking.getParking()[i][j] instanceof Departure){
                     Node node = new Node(Template.Departure, i, j);
+                    this.departure = node;
                     nodesList.add(node);
                 }
             }
@@ -36,26 +55,31 @@ public class Graph {
             int indexI = nodesList.get(i).getI();
             if (indexI>0){
                 for (int j=0; j<size;j++){
-                    if ((nodesList.get(j).getI() == indexI-1)&&(nodesList.get(j).getJ() == indexJ))
-                        nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
+                    if ((nodesList.get(j).getI() == indexI-1)&&(nodesList.get(j).getJ() == indexJ)) {
+                        if (nodesList.get(j).getType()!=Template.ParkingPlace||nodesList.get(i).getType()!=Template.ParkingPlace)
+                            nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
+                    }
                 }
             }
             if(indexI<parking.getFunctionalBlockH()-1){
                 for (int j=0; j<size;j++){
                     if ((nodesList.get(j).getI() == indexI+1)&&(nodesList.get(j).getJ() == indexJ))                                                                                                                        //КАКАШКА
-                        nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
+                        if (nodesList.get(j).getType()!=Template.ParkingPlace||nodesList.get(i).getType()!=Template.ParkingPlace)
+                            nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
                 }
             }
             if (indexJ>0){
                 for (int j=0; j<size;j++){
                     if ((nodesList.get(j).getI() == indexI)&&(nodesList.get(j).getJ() == indexJ-1))
-                        nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
+                        if (nodesList.get(j).getType()!=Template.ParkingPlace||nodesList.get(i).getType()!=Template.ParkingPlace)
+                            nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
                 }
             }
             if(indexJ<parking.getFunctionalBlockV()-1){
                 for (int j=0; j<size;j++){
                     if ((nodesList.get(j).getI() == indexI)&&(nodesList.get(j).getJ() == indexJ+1))
-                        nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
+                        if (nodesList.get(j).getType()!=Template.ParkingPlace||nodesList.get(i).getType()!=Template.ParkingPlace)
+                            nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
                 }
             }
         }
@@ -82,8 +106,12 @@ public class Graph {
     }
 
     public List<Node> getPath(Node first, Node last){
-        ArrayList<Node> nodes = new ArrayList<>(nodesList);
         ArrayList<Node> path = new ArrayList<>();
+        if (first.equals(last)){
+            path.add(first);
+            return path;
+        }
+        ArrayList<Node> nodes = new ArrayList<>(nodesList);
         nodes.remove(first);
         if (getNext(nodes, path, first.getAdjacentNodes(), last)) {
             path.add(0, first);
@@ -110,7 +138,7 @@ public class Graph {
         return false;
     }
 
-    public static void main(String[] s){
+    /*public static void main(String[] s){
         Parking parking = new Parking(3, 3, null, 0);
         parking.setParking(new FunctionalBlock[][]{
                 new FunctionalBlock[]{new ParkingPlace(null), new ParkingPlace(null), new ParkingPlace(null)},
@@ -131,5 +159,10 @@ public class Graph {
             }
             System.out.println("***");
         }
+    }*/
+
+    @Override
+    public Iterator<Node> iterator() {
+        return nodesList.iterator();
     }
 }
