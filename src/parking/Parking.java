@@ -4,11 +4,19 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import parking.template.*;
 
-public class Parking {
+import javax.sql.rowset.serial.SerialArray;
+import java.io.Serializable;
+
+public class Parking implements Serializable {
 
     private FunctionalBlock[][] parking;
-    private GraphicsContext graphicsContext;
+    private transient GraphicsContext graphicsContext;
     private int size;
+
+    public void setGraphicsContext(GraphicsContext graphicsContext) {
+        this.graphicsContext = graphicsContext;
+    }
+
     private int functionalBlockH;
     private int functionalBlockV;
     private final double HORIZONTAL_MARGIN;

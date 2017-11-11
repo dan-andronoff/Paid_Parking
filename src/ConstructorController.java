@@ -13,7 +13,7 @@ import parking.Verificator;
 import parking.VerificatorError;
 import parking.template.Template;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ConstructorController {
@@ -113,10 +113,53 @@ public class ConstructorController {
     }
 
     @FXML
+    public void onLoad(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Загрузка топологии:");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Файл топологии парковки","*.top"));
+        File file = fileChooser.showOpenDialog(stage);
+        if (file!=null) {
+            try (FileInputStream in = new FileInputStream(file.getPath())) {
+                ObjectInputStream objectInputStream = new ObjectInputStream(in);
+                parking = (Parking) objectInputStream.readObject();
+                parking.setGraphicsContext(graphicsContext);
+                for (int i = 0; i < parking.getFunctionalBlockH(); i++) {
+                    for (int j = 0; j < parking.getFunctionalBlockV(); j++) {
+                        if (parking.getFunctionalBlock(i, j) != null) {
+                            parking.getFunctionalBlock(i, j).setGraphicsContext(graphicsContext);
+                        }
+                    }
+                }
+                graphicsContext.clearRect(0, 0, graphicsContext.getCanvas().getWidth(), graphicsContext.getCanvas().getHeight());
+                parking.drawHighway();
+                parking.drawMarkup();
+                parking.drawFunctionalBlocks();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
     public void onSave(){
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        fileChooser.showOpenDialog(stage);
+        fileChooser.setTitle("Сохранение топологию:");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Файл топологии парковки","*.top"));
+        File file = fileChooser.showSaveDialog(stage);
+        if(file!=null) {
+            try (FileOutputStream out = new FileOutputStream(file.getPath())) {
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+                objectOutputStream.writeObject(parking);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
