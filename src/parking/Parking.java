@@ -43,7 +43,7 @@ public class Parking implements Serializable {
         this.functionalBlockV = functionalBlockV;
         HIGHWAY_SIZE = 2 * size;
         HORIZONTAL_MARGIN = graphicsContext.getCanvas().getWidth() / 2 - functionalBlockH * size / 2;
-        VERTICAL_MARGIN = graphicsContext.getCanvas().getHeight() / 2 - functionalBlockV * size / 2 - HIGHWAY_SIZE / 2 - 1;
+        VERTICAL_MARGIN = graphicsContext.getCanvas().getHeight() / 2 - functionalBlockV * size / 2 - HIGHWAY_SIZE / 2;
     }
 
     public Parking(int functionalBlockH, int functionalBlockV, GraphicsContext graphicsContext, int size, Parking oldParking) {
@@ -51,8 +51,12 @@ public class Parking implements Serializable {
         int minH = (functionalBlockH > oldParking.functionalBlockH) ? oldParking.functionalBlockH : functionalBlockH;
         int minV = (functionalBlockV > oldParking.functionalBlockV) ? oldParking.functionalBlockV : functionalBlockV;
         for (int i = 0; i < minH; i++)
-            for (int j = 0; j < minV; j++)
-                parking[i][j] = oldParking.parking[i][j];
+            for (int j = 0; j < minV; j++) {
+                if (oldParking.parking[i][j]!=null){
+                    parking[i][j] = oldParking.parking[i][j];
+                    parking[i][j].setGraphicsContext(graphicsContext);
+                }
+            }
     }
 
     public FunctionalBlock getFunctionalBlock(int i, int j) {
@@ -76,8 +80,8 @@ public class Parking implements Serializable {
     public void drawFunctionalBlock(double x, double y) {
         int i = ((int) (x - HORIZONTAL_MARGIN)) / size;
         int j = ((int) (y - VERTICAL_MARGIN)) / size;
-        graphicsContext.clearRect(HORIZONTAL_MARGIN + i * size + 2, VERTICAL_MARGIN + j * size + 2, size - 4, size - 4);
-        parking[i][j].render(HORIZONTAL_MARGIN + i * size + 2, VERTICAL_MARGIN + j * size + 2, size - 4);
+        graphicsContext.clearRect(HORIZONTAL_MARGIN + i * size + 1, VERTICAL_MARGIN + j * size + 1, size - 2, size - 2);
+        parking[i][j].render(HORIZONTAL_MARGIN + i * size + 1, VERTICAL_MARGIN + j * size + 1, size - 1);
     }
 
     public void createFunctionalBlock(double x, double y, Template template) {
@@ -112,8 +116,8 @@ public class Parking implements Serializable {
         for (int i = 0; i < functionalBlockH; i++)
             for (int j = 0; j < functionalBlockV; j++)
                 if (parking[i][j] != null) {
-                    graphicsContext.clearRect(HORIZONTAL_MARGIN + i * size + 2, VERTICAL_MARGIN + j * size + 2, size - 4, size - 4);
-                    parking[i][j].render(HORIZONTAL_MARGIN + i * size + 2, VERTICAL_MARGIN + j * size + 2, size - 4);
+                    graphicsContext.clearRect(HORIZONTAL_MARGIN + i * size + 1, VERTICAL_MARGIN + j * size + 1, size - 2, size - 2);
+                    parking[i][j].render(HORIZONTAL_MARGIN + i * size + 1, VERTICAL_MARGIN + j * size + 1, size - 1);
                 }
     }
 
@@ -121,7 +125,7 @@ public class Parking implements Serializable {
         String imagePath = "highway_road.jpg";
         Image image = new Image(imagePath);
         for (int i = 0; i < graphicsContext.getCanvas().getWidth() / HIGHWAY_SIZE; i++) {
-            graphicsContext.drawImage(image, 2 * i * size, VERTICAL_MARGIN + functionalBlockV * size + 2, HIGHWAY_SIZE, HIGHWAY_SIZE);
+            graphicsContext.drawImage(image, 2 * i * size, VERTICAL_MARGIN + functionalBlockV * size + 1, HIGHWAY_SIZE, HIGHWAY_SIZE);
         }
     }
 

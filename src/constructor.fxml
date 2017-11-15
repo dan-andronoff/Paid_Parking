@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
    <children>
       <BorderPane fx:id="borderPane" layoutX="139.0" layoutY="70.0" prefHeight="681.0" prefWidth="957.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -40,7 +40,7 @@
             </MenuBar>
          </top>
          <center>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                 <Tab text="Конструирование">
                      <content>
@@ -104,12 +104,13 @@
                            <center>
                               <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <top>
-                                    <GridPane maxWidth="209.0" prefHeight="50.0" prefWidth="11.0" BorderPane.alignment="TOP_LEFT">
+                                    <GridPane maxWidth="250.0" prefHeight="50.0" prefWidth="250.0" BorderPane.alignment="TOP_LEFT">
                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="50.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="67.0" minWidth="10.0" prefWidth="52.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" percentWidth="20.0" prefWidth="50.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="67.0" minWidth="10.0" percentWidth="20.0" prefWidth="52.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" percentWidth="20.0" prefWidth="50.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
                                       </columnConstraints>
                                       <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -123,7 +124,7 @@
                                                 <Image url="@save.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="50.0" fitWidth="57.0" onMouseClicked="#onSettingsClick" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                          <ImageView fitHeight="50.0" fitWidth="57.0" onMouseClicked="#onConstructorSettingsClick" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                                              <image>
                                                 <Image url="@settings.png" />
                                              </image>
@@ -133,16 +134,21 @@
                                                 <Image url="@check.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="60.0" fitWidth="48.0" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#onLoad" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
+                                          <ImageView fitHeight="60.0" fitWidth="48.0" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#onConstructorLoad" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
                                              <image>
                                                 <Image url="@load.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="51.0" fitWidth="53.0" onMouseClicked="#onGoToModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
+                                             <image>
+                                                <Image url="@goToModeling.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </GridPane>
                                  </top>
                                  <center>
-                                    <Pane fx:id="centerPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <Pane fx:id="constructor" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets />
                                        </BorderPane.margin></Pane>
@@ -152,7 +158,56 @@
                         </BorderPane>
                      </content>
                   </Tab>
-                <Tab text="Моделирование" />
+                <Tab text="Моделирование">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <center>
+                                    <Pane fx:id="modeling" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                 </center>
+                                 <top>
+                                    <GridPane maxWidth="209.0" prefHeight="50.0" prefWidth="119.0" BorderPane.alignment="TOP_LEFT">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="52.0" minWidth="0.0" percentWidth="25.0" prefWidth="51.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="542.0" minWidth="0.0" percentWidth="25.0" prefWidth="46.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="756.0" minWidth="0.0" percentWidth="25.0" prefWidth="42.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="756.0" minWidth="0.0" percentWidth="25.0" prefWidth="105.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <BorderPane.margin>
+                                          <Insets left="5.0" />
+                                       </BorderPane.margin>
+                                       <children>
+                                          <ImageView fitHeight="55.0" fitWidth="52.0" onMouseClicked="#onModelingLoad" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@load.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="49.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                                             <image>
+                                                <Image url="@parking_settings.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="47.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                                             <image>
+                                                <Image url="@trafic_settings.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="52.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                                             <image>
+                                                <Image url="@play.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </GridPane>
+                                 </top>
+                              </BorderPane>
+                           </center>
+                        </BorderPane>
+                     </content></Tab>
               </tabs>
             </TabPane>
          </center>
