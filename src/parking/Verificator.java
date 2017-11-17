@@ -8,19 +8,22 @@ import java.util.ArrayList;
 
 public class Verificator {
 
-    public static ArrayList<VerificatorError> checkAll(Parking parking){
+    public static ArrayList<VerificatorError> checkAll(Parking parking) {
         ArrayList<VerificatorError> errors = new ArrayList<>();
-        if(!hasUniqueCashBox(parking)){
+        if (!hasUniqueCashBox(parking)) {
             errors.add(VerificatorError.MultiCashBox);
         }
-        if(!hasUniqueInfoTable(parking)){
+        if (!hasUniqueInfoTable(parking)) {
             errors.add(VerificatorError.MultiInfoTable);
         }
-        if(!isEntryDeparturePlacedCorrect(parking)){
+        if (!isEntryDeparturePlacedCorrect(parking)) {
             errors.add(VerificatorError.IncorrectEntryDeparturePlacement);
         }
-        if(!checkPaths(parking)){
+        if (!checkPaths(parking)) {
             errors.add(VerificatorError.UnrelatedGraph);
+        }
+        if (hasNullFunctionalBlocks(parking)) {
+            errors.add(VerificatorError.hasNullFunctionalBlock);
         }
         return errors;
     }
@@ -91,6 +94,14 @@ public class Verificator {
             }
         }
         return true;
+    }
+
+    private static boolean hasNullFunctionalBlocks(Parking parking){
+        for (int i=0; i< parking.getFunctionalBlockH(); i++)
+            for (int j=0; j< parking.getFunctionalBlockV(); j++)
+                if (parking.getFunctionalBlock(i, j)== null)
+                    return true;
+        return false;
     }
 
 }

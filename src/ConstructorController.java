@@ -201,6 +201,9 @@ public class ConstructorController {
             if (errorList.contains(VerificatorError.UnrelatedGraph)) {
                 message.append("\n - Требуется наличие пути от въезда до всех парковочных мест и дорог.");
             }
+            if (errorList.contains(VerificatorError.hasNullFunctionalBlock)) {
+                message.append("\n - Требуется заполнить все функциональные блоки.");
+            }
             return message.toString();
         }
     }
@@ -273,21 +276,20 @@ public class ConstructorController {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        }
-        String message = getErrorMessage(modelingParking);
-        if (message == null) {
-            clearModelingContext();
-            modelingParking.drawHighway();
-            modelingParking.drawMarkup();
-            modelingParking.drawFunctionalBlocks();
+            String message = getErrorMessage(modelingParking);
+            if (message == null) {
+                clearModelingContext();
+                modelingParking.drawHighway();
+                modelingParking.drawMarkup();
+                modelingParking.drawFunctionalBlocks();
 
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("");
-            alert.setHeaderText("");
-            alert.setContentText("Топология сконструирована неверно, попробуйте изменить топологию в конструировании.");
-            alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("");
+                alert.setHeaderText("");
+                alert.setContentText("Топология сконструирована неверно, попробуйте изменить топологию в конструировании.");
+                alert.showAndWait();
+            }
         }
     }
-
 }

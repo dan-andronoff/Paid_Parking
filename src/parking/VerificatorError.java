@@ -1,5 +1,5 @@
 package parking;
 
 public enum VerificatorError {
-    MultiInfoTable, MultiCashBox, IncorrectEntryDeparturePlacement, UnrelatedGraph;
+    MultiInfoTable, MultiCashBox, IncorrectEntryDeparturePlacement, UnrelatedGraph, hasNullFunctionalBlock;
 }
