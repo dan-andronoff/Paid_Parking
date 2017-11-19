@@ -9,6 +9,7 @@ public class Node {
     private int i;
     private int j;
     private ArrayList<Node> adjacentNodes;
+    private boolean isFree = true;
 
     public Node() {
         adjacentNodes = new ArrayList<>();
@@ -22,6 +23,15 @@ public class Node {
         this.type = type;
         this.i = i;
         this.j = j;
+    }
+
+
+    public boolean isFree() {
+        return isFree;
+    }
+
+    public void setFree(boolean free) {
+        isFree = free;
     }
 
     public void setType(Template type) {
@@ -67,4 +77,5 @@ public class Node {
     public String toString(){
         return i+ " " + j;
     }
+
 }

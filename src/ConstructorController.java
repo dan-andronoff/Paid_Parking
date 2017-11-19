@@ -1,6 +1,9 @@
+import graph.Graph;
+import graph.Node;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,12 +15,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import modeling.Car;
 import parking.Parking;
 import parking.Verificator;
 import parking.VerificatorError;
@@ -304,21 +306,26 @@ public class ConstructorController {
     @FXML
     public void onStartModeling(){
         AnimationTimer animationTimer = new AnimationTimer() {
-            private long lastUpdate = 0;
-            ArrayList<javafx.scene.image.ImageView> cars = new ArrayList<>();
+            private long lastHighwayReverse = 0;
+            private long lastHighway = 7_000_000_00L;
+            private Graph graph = new Graph(modelingParking);
+            {
+                for (int i=0; i<graph.getNodesList().size(); i++) {
+                        System.out.println(graph.getNodesList().get(i)+ " " + graph.getNodesList().get(i).getType().toString() + " " + graph.getNodesList().get(i).getAdjacentNodes());
+                }
+            }
+
+            ArrayList<Car> cars = new ArrayList<>();
             @Override
             public void handle(long now) {
-                if (now - lastUpdate > 8_000_000_00L) {
-                    javafx.scene.image.ImageView car = new javafx.scene.image.ImageView("car-car.png");
+                if (now - lastHighwayReverse > 8_000_000_00L) {
+                    Car car = new Car(graphicsContextModeling.getCanvas().getWidth()+50,modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+75);
                     cars.add(car);
-                    car.setFitWidth(45);
-                    car.setFitHeight(25);
-                    car.setX(graphicsContextModeling.getCanvas().getWidth()+50);
-                    car.setY(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+75);
                     modeling.getChildren().add(car);
+
                     Path path = new Path();
-                    path.getElements().add(new MoveTo(graphicsContextModeling.getCanvas().getWidth()+50,
-                            modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+75));
+                    path.getElements().add(new MoveTo(car.getX(),
+                            car.getY()));
                     path.getElements().add(new LineTo(-50, modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+75));
 
                     PathTransition pathTransition = new PathTransition();
@@ -326,12 +333,8 @@ public class ConstructorController {
                     pathTransition.setNode(car);
                     pathTransition.setPath(path);
                     pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-                    pathTransition.setCycleCount(1);
                     pathTransition.setInterpolator(Interpolator.LINEAR);
-
                     pathTransition.play();
-
-                    lastUpdate = now;
 
                     for (int i=0; i<cars.size();i++) {
                         if (cars.get(i).getTranslateX()<-graphicsContextModeling.getCanvas().getWidth()-45) {
@@ -340,8 +343,60 @@ public class ConstructorController {
                             i--;
                         }
                     }
-                    System.out.println(modeling.getChildren().size());
                     System.out.println(cars.size());
+                    System.out.println(modeling.getChildren().size());
+                    lastHighwayReverse = now;
+                }
+                if (now - lastHighway > 8_000_000_00L) {
+                    Car car = new Car(-50,modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25);
+                    cars.add(car);
+                    modeling.getChildren().add(car);
+
+                    Path path = new Path();
+                    path.getElements().add(new MoveTo(car.getX(),
+                            car.getY()));
+                    path.getElements().add(new LineTo(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()-25,
+                            modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25));
+
+
+                    CubicCurveTo cubicTo = new CubicCurveTo();
+                    cubicTo.setControlX1(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN());
+                    cubicTo.setControlY1(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25);
+                    cubicTo.setControlX2(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()+25);
+                    cubicTo.setControlY2(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+15);
+                    cubicTo.setX(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()+25);
+                    cubicTo.setY(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size-25);
+                    path.getElements().add(cubicTo);
+
+
+                    car.setPath(graph.getPathToFreeParkingPlace());
+                    if (car.getPath()!=null) {
+                        System.out.println(car.getPath());
+                        for (Node step : car.getPath()
+                                ) {
+                            path.getElements().add(new LineTo(step.getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
+                                    step.getJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
+                        }
+                    }
+                    PathTransition pathTransition = new PathTransition();
+                    pathTransition.setDuration(Duration.millis(16000));
+                    pathTransition.setNode(car);
+                    pathTransition.setPath(path);
+                    pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+                    pathTransition.setInterpolator(Interpolator.LINEAR);
+                    pathTransition.play();
+
+
+                    for (int i=0; i<cars.size();i++) {
+                        if (cars.get(i).getTranslateX()<-graphicsContextModeling.getCanvas().getWidth()-45) {
+                            modeling.getChildren().remove(cars.get(i));
+                            cars.remove(cars.get(i));
+                            i--;
+                        }
+                    }
+                    System.out.println(cars.size());
+                    System.out.println(modeling.getChildren().size());
+                    lastHighway = now;
                 }
             }
         };

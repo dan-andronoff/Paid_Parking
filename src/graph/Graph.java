@@ -36,6 +36,7 @@ public class Graph implements Iterable<Node> {
                 if (parking.getParking()[i][j] instanceof ParkingPlace){
                     Node node = new Node(Template.ParkingPlace, i, j);
                     nodesList.add(node);
+                    freeParkingPlaces.add(node);
                 }
                 if (parking.getParking()[i][j] instanceof Entry){
                     Node node = new Node(Template.Entry, i, j);
@@ -96,8 +97,9 @@ public class Graph implements Iterable<Node> {
                 nodes.remove(currentNode);
                 for (Node node : currentNode.getAdjacentNodes()
                         ) {
-                    if (node.equals(last))
+                    if (node.equals(last)) {
                         return true;
+                    }
                     queue.offer(node);
                 }
             }
@@ -105,7 +107,37 @@ public class Graph implements Iterable<Node> {
         return false;
     }
 
-    public List<Node> getPath(Node first, Node last){
+    public ArrayList<Node> getPath1(Node first, Node last) {
+        Queue<Node> queue = new LinkedList<>();
+        ArrayList<Node> nodes = new ArrayList<>(nodesList);
+        LinkedHashMap<Node, Node> map = new LinkedHashMap<Node, Node>();
+        queue.offer(first);
+        nodes.remove(first);
+        while (!queue.isEmpty()) {
+            Node currentNode = queue.remove();
+            for (Node node : currentNode.getAdjacentNodes()
+                    ) {
+                if (node.equals(last)) {
+                    ArrayList<Node> path = new ArrayList<>();
+                    path.add(last);
+                    path.add(0, currentNode);
+                    while (map.get(currentNode)!=first){
+                        path.add(0, map.get(currentNode));
+                        currentNode=map.get(currentNode);
+                    }
+                    return path;
+                }
+                if (nodes.contains(node)) {
+                    queue.offer(node);
+                    nodes.remove(node);
+                    map.put(node, currentNode);
+                }
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Node> getPath(Node first, Node last){
         ArrayList<Node> path = new ArrayList<>();
         if (first.equals(last)){
             path.add(first);
@@ -138,6 +170,22 @@ public class Graph implements Iterable<Node> {
         return false;
     }
 
+    private ArrayList<Node> freeParkingPlaces = new ArrayList<>();
+
+    public ArrayList<Node> getFreeParkingPlaces() {
+        return freeParkingPlaces;
+    }
+
+    public ArrayList<Node> getPathToFreeParkingPlace(){
+
+        if (freeParkingPlaces.size()>0) {
+            return getPath1(entry, freeParkingPlaces.remove(0));
+        }
+        else return null;
+    }
+
+
+
     /*public static void main(String[] s){
         Parking parking = new Parking(3, 3, null, 0);
         parking.setParking(new FunctionalBlock[][]{
@@ -165,4 +213,6 @@ public class Graph implements Iterable<Node> {
     public Iterator<Node> iterator() {
         return nodesList.iterator();
     }
+
+
 }
