@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import parking.template.*;
 
-import javax.sql.rowset.serial.SerialArray;
 import java.io.Serializable;
 
 public class Parking implements Serializable {
@@ -132,5 +131,13 @@ public class Parking implements Serializable {
     public boolean isInParking(int x, int y){
         return x>HORIZONTAL_MARGIN && x < HORIZONTAL_MARGIN + functionalBlockH*size
                 && y>VERTICAL_MARGIN && y < VERTICAL_MARGIN + functionalBlockV*size;
+    }
+
+    public double getHORIZONTAL_MARGIN() {
+        return HORIZONTAL_MARGIN;
+    }
+
+    public double getVERTICAL_MARGIN() {
+        return VERTICAL_MARGIN;
     }
 }

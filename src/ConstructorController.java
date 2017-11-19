@@ -1,3 +1,6 @@
+import javafx.animation.AnimationTimer;
+import javafx.animation.Interpolator;
+import javafx.animation.PathTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,14 +12,19 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import parking.Parking;
 import parking.Verificator;
 import parking.VerificatorError;
 import parking.template.Template;
 
 import java.io.*;
+
 import java.util.ArrayList;
 
 public class ConstructorController {
@@ -73,7 +81,7 @@ public class ConstructorController {
         constructorParking.drawHighway();
         constructorParking.drawFunctionalBlocks();
         //Инициализация вкладки моделирования
-        canvas = new Canvas(815, 575);
+        canvas = new Canvas(900, 575);
         graphicsContextModeling = canvas.getGraphicsContext2D();
         modeling.getChildren().add(canvas);
     }
@@ -259,8 +267,8 @@ public class ConstructorController {
         if (file != null) {
             try (FileInputStream in = new FileInputStream(file.getPath())) {
                 ObjectInputStream objectInputStream = new ObjectInputStream(in);
-                modelingParking = (Parking) objectInputStream.readObject();
-                modelingParking.setGraphicsContext(graphicsContextModeling);
+                Parking parking = (Parking) objectInputStream.readObject();
+                modelingParking = new Parking(parking.getFunctionalBlockH(), parking.getFunctionalBlockV(), graphicsContextModeling, size, parking);
                 for (int i = 0; i < modelingParking.getFunctionalBlockH(); i++) {
                     for (int j = 0; j < modelingParking.getFunctionalBlockV(); j++) {
                         if (modelingParking.getFunctionalBlock(i, j) != null) {
@@ -291,5 +299,52 @@ public class ConstructorController {
                 alert.showAndWait();
             }
         }
+    }
+
+    @FXML
+    public void onStartModeling(){
+        AnimationTimer animationTimer = new AnimationTimer() {
+            private long lastUpdate = 0;
+            ArrayList<javafx.scene.image.ImageView> cars = new ArrayList<>();
+            @Override
+            public void handle(long now) {
+                if (now - lastUpdate > 8_000_000_00L) {
+                    javafx.scene.image.ImageView car = new javafx.scene.image.ImageView("car-car.png");
+                    cars.add(car);
+                    car.setFitWidth(45);
+                    car.setFitHeight(25);
+                    car.setX(graphicsContextModeling.getCanvas().getWidth()+50);
+                    car.setY(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+75);
+                    modeling.getChildren().add(car);
+                    Path path = new Path();
+                    path.getElements().add(new MoveTo(graphicsContextModeling.getCanvas().getWidth()+50,
+                            modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+75));
+                    path.getElements().add(new LineTo(-50, modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+75));
+
+                    PathTransition pathTransition = new PathTransition();
+                    pathTransition.setDuration(Duration.millis(8000));
+                    pathTransition.setNode(car);
+                    pathTransition.setPath(path);
+                    pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+                    pathTransition.setCycleCount(1);
+                    pathTransition.setInterpolator(Interpolator.LINEAR);
+
+                    pathTransition.play();
+
+                    lastUpdate = now;
+
+                    for (int i=0; i<cars.size();i++) {
+                        if (cars.get(i).getTranslateX()<-graphicsContextModeling.getCanvas().getWidth()-45) {
+                            modeling.getChildren().remove(cars.get(i));
+                            cars.remove(cars.get(i));
+                            i--;
+                        }
+                    }
+                    System.out.println(modeling.getChildren().size());
+                    System.out.println(cars.size());
+                }
+            }
+        };
+        animationTimer.start();
     }
 }

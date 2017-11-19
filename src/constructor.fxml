@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
    <children>
       <BorderPane fx:id="borderPane" layoutX="139.0" layoutY="70.0" prefHeight="681.0" prefWidth="957.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -148,7 +148,7 @@
                                     </GridPane>
                                  </top>
                                  <center>
-                                    <Pane fx:id="constructor" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                    <Pane fx:id="constructor" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets />
                                        </BorderPane.margin></Pane>
@@ -164,7 +164,7 @@
                            <center>
                               <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <center>
-                                    <Pane fx:id="modeling" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                    <Pane fx:id="modeling" BorderPane.alignment="CENTER" />
                                  </center>
                                  <top>
                                     <GridPane maxWidth="209.0" prefHeight="50.0" prefWidth="119.0" BorderPane.alignment="TOP_LEFT">
@@ -196,7 +196,7 @@
                                                 <Image url="@trafic_settings.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="52.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                                          <ImageView fitHeight="52.0" fitWidth="53.0" onMouseClicked="#onStartModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                                              <image>
                                                 <Image url="@play.png" />
                                              </image>
