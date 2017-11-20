@@ -329,15 +329,14 @@ public class ConstructorController {
                     pathTransition.setPath(path);
                     pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
                     pathTransition.setInterpolator(Interpolator.LINEAR);
+                    pathTransition.setOnFinished((event -> {
+                        PathTransition pathTransition1 = (PathTransition)event.getSource();
+                        Car car_car = (Car)pathTransition1.getNode();
+                        cars.remove(car_car);
+                        modeling.getChildren().remove(car_car);
+                    }));
                     pathTransition.play();
 
-                    for (int i=0; i<cars.size();i++) {
-                        if (cars.get(i).getTranslateX()<-graphicsContextModeling.getCanvas().getWidth()-45) {
-                            modeling.getChildren().remove(cars.get(i));
-                            cars.remove(cars.get(i));
-                            i--;
-                        }
-                    }
                     System.out.println(cars.size());
                     System.out.println(modeling.getChildren().size());
                     lastHighwayReverse = now;
@@ -350,50 +349,121 @@ public class ConstructorController {
                     Path path = new Path();
                     path.getElements().add(new MoveTo(car.getX(),
                             car.getY()));
-                    path.getElements().add(new LineTo(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()-25,
-                            modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25));
+                    PathTransition pathTransition = new PathTransition();
 
 
-                    CubicCurveTo cubicTo = new CubicCurveTo();
-                    cubicTo.setControlX1(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN());
-                    cubicTo.setControlY1(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25);
-                    cubicTo.setControlX2(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()+25);
-                    cubicTo.setControlY2(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+15);
-                    cubicTo.setX(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()+25);
-                    cubicTo.setY(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size-25);
-                    path.getElements().add(cubicTo);
+                    if (graph.hasFreeParkingPlaces()) {
+                        //Путь от начала шоссе до въезда
+
+                        path.getElements().add(new LineTo(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()-25,
+                                modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25));
+
+                        //Поворот на парковку
+
+                        CubicCurveTo cubicTo = new CubicCurveTo();
+                        cubicTo.setControlX1(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN());
+                        cubicTo.setControlY1(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25);
+                        cubicTo.setControlX2(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()+25);
+                        cubicTo.setControlY2(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+15);
+                        cubicTo.setX(graph.getEntry().getI()*size+modelingParking.getHORIZONTAL_MARGIN()+25);
+                        cubicTo.setY(modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size-25);
+                        path.getElements().add(cubicTo);
 
 
-                    car.setPath(graph.getPathToFreeParkingPlace());
-                    if (car.getPath()!=null) {
+                        // Путь от въезда до парковочного места
+
+                        ArrayList<Node> pathToFreeParkingPlace = graph.getPathToFreeParkingPlace();
+                        car.setPath(pathToFreeParkingPlace);
+                        car.setParkingPlace(pathToFreeParkingPlace.get(pathToFreeParkingPlace.size()-1));
+                            for (Node step : car.getPath()
+                                    ) {
+                                path.getElements().add(new LineTo(step.getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
+                                        step.getJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
+                            }
+
+                        // Путь от парковочного места до выезда
+
+                        pathTransition.setOnFinished((event)->{
+                            PathTransition pathTransitionToParkingPlace = (PathTransition)event.getSource();
+                            PathTransition pathTransition1 = new PathTransition();
+                            Car car_car = (Car)pathTransitionToParkingPlace.getNode();
+                            graph.freeParkingPlace(car_car.getParkingPlace());
+                            Path pathToDeparture = new Path();
+
+                            pathToDeparture.getElements().add(new MoveTo(car_car.getParkingPlace().getI()*size + modelingParking.getHORIZONTAL_MARGIN()+25, car_car.getParkingPlace().getJ()*size +modelingParking.getVERTICAL_MARGIN()+25));
+                            car_car.setPath(graph.getPath1(car_car.getParkingPlace(), graph.getDeparture()));
+                            for (Node step : car_car.getPath()
+                                    ) {
+                                pathToDeparture.getElements().add(new LineTo(step.getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
+                                        step.getJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
+                            }
+
+                            CubicCurveTo cubicTo1= new CubicCurveTo();
+                            cubicTo1.setControlX1(graph.getDeparture().getI()*size + modelingParking.getHORIZONTAL_MARGIN()+25);
+                            cubicTo1.setControlY1(graph.getDeparture().getJ()*size + modelingParking.getVERTICAL_MARGIN() + 65);
+                            cubicTo1.setControlX2(graph.getDeparture().getI()*size + modelingParking.getHORIZONTAL_MARGIN()+35);
+                            cubicTo1.setControlY2(graph.getDeparture().getJ()*size + modelingParking.getVERTICAL_MARGIN() + 75);
+                            cubicTo1.setX(graph.getDeparture().getI()*size + modelingParking.getHORIZONTAL_MARGIN()+75);
+                            cubicTo1.setY(graph.getDeparture().getJ()*size + modelingParking.getVERTICAL_MARGIN() + 75);
+                            pathToDeparture.getElements().add(cubicTo1);
+
+                            pathToDeparture.getElements().add(new LineTo(modeling.getWidth()+50,modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25));
+
+                            pathTransition1.setDuration(Duration.millis((modelingParking.getHORIZONTAL_MARGIN() / size * 500) + car_car.getPath().size()*500 + (modelingParking.getFunctionalBlockH() - graph.getDeparture().getI())*500));
+                            pathTransition1.setPath(pathToDeparture);
+                            pathTransition1.setNode(car_car);
+                            pathTransition1.setPath(pathToDeparture);
+                            pathTransition1.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+                            pathTransition1.setInterpolator(Interpolator.LINEAR);
+                            pathTransition1.setDelay(Duration.millis(Distribution.getUniformDistribution(2000, 10000)));
+                            pathTransition1.play();
+
+                            pathTransition1.setOnFinished(event1 -> {
+                                PathTransition pathTransition2 = (PathTransition) event1.getSource();
+                                Car car_car_car = (Car) pathTransition2.getNode();
+                                cars.remove(car_car_car);
+                                modeling.getChildren().remove(car_car_car);
+                            });
+                        });
+                        /*car.setPath(graph.getPath1(car.getParkingPlace(), graph.getDeparture()));
                         for (Node step : car.getPath()
                                 ) {
                             path.getElements().add(new LineTo(step.getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
                                     step.getJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
                         }
+
+
+                        cubicTo= new CubicCurveTo();
+                        cubicTo.setControlX1(graph.getDeparture().getI()*size + modelingParking.getHORIZONTAL_MARGIN()+25);
+                        cubicTo.setControlY1(graph.getDeparture().getJ()*size + modelingParking.getVERTICAL_MARGIN() + 65);
+                        cubicTo.setControlX2(graph.getDeparture().getI()*size + modelingParking.getHORIZONTAL_MARGIN()+35);
+                        cubicTo.setControlY2(graph.getDeparture().getJ()*size + modelingParking.getVERTICAL_MARGIN() + 75);
+                        cubicTo.setX(graph.getDeparture().getI()*size + modelingParking.getHORIZONTAL_MARGIN()+75);
+                        cubicTo.setY(graph.getDeparture().getJ()*size + modelingParking.getVERTICAL_MARGIN() + 75);
+                        path.getElements().add(cubicTo);
+
+                        path.getElements().add(new LineTo(modeling.getWidth()+50,modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25));*/
+                        pathTransition.setDuration(Duration.millis(graph.getEntry().getI() * 500
+                                    + (modelingParking.getHORIZONTAL_MARGIN() / size * 500) + car.getPath().size()*500));
+
                     }
-                    PathTransition pathTransition = new PathTransition();
-                    if (car.getPath()!=null) {
-                        pathTransition.setDuration(Duration.millis(graph.getEntry().getI() * 1000 + car.getPath().size() * 1000
-                                + modelingParking.getHORIZONTAL_MARGIN() / size * 1000));
+                    else{
+                        path.getElements().add(new LineTo(modeling.getWidth()+50,modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25));
+                        pathTransition.setDuration(Duration.millis(modeling.getWidth()/size * 500));
+                        pathTransition.setOnFinished((event -> {
+                            PathTransition pathTransition1 = (PathTransition)event.getSource();
+                            Car car_car = (Car)pathTransition1.getNode();
+                            cars.remove(car_car);
+                            modeling.getChildren().remove(car_car);
+                        }));
+                        pathTransition.play();
                     }
-                    else pathTransition.setDuration(Duration.millis(4000));
+
                     pathTransition.setNode(car);
                     pathTransition.setPath(path);
                     pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
                     pathTransition.setInterpolator(Interpolator.LINEAR);
                     pathTransition.play();
-
-
-                    for (int i=0; i<cars.size();i++) {
-                        if (cars.get(i).getTranslateX()<-graphicsContextModeling.getCanvas().getWidth()-45) {
-                            modeling.getChildren().remove(cars.get(i));
-                            cars.remove(cars.get(i));
-                            i--;
-                        }
-                    }
-                    System.out.println(cars.size());
-                    System.out.println(modeling.getChildren().size());
                     lastHighway = now;
                 }
             }

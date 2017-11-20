@@ -9,6 +9,12 @@ public class Car extends ImageView {
     private static final int width = 45;
     private static final int height = 25;
 
+    public Node getParkingPlace() {
+        return parkingPlace;
+    }
+
+    private Node parkingPlace;
+
 
     public void setPath(ArrayList<Node> path) {
         this.path = path;
@@ -34,5 +40,9 @@ public class Car extends ImageView {
 
     public double getyPosition() {
         return getTranslateY();
+    }
+
+    public void setParkingPlace(Node parkingPlace) {
+        this.parkingPlace = parkingPlace;
     }
 }

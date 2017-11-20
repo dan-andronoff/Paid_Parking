@@ -91,16 +91,17 @@ public class Graph implements Iterable<Node> {
         Queue<Node> queue = new LinkedList<>();
         ArrayList<Node> nodes = new ArrayList<>(nodesList);
         queue.offer(first);
+        nodes.remove(first);
         while (!queue.isEmpty()) {
             Node currentNode = queue.remove();
-            if (nodes.contains(currentNode)) {
-                nodes.remove(currentNode);
-                for (Node node : currentNode.getAdjacentNodes()
-                        ) {
-                    if (node.equals(last)) {
-                        return true;
-                    }
+            for (Node node : currentNode.getAdjacentNodes()
+                    ) {
+                if (node.equals(last)) {
+                    return true;
+                }
+                if (nodes.contains(node) && (node.getType() != Template.ParkingPlace) && (node.getType() != Template.Departure)) {
                     queue.offer(node);
+                    nodes.remove(node);
                 }
             }
         }
@@ -119,19 +120,19 @@ public class Graph implements Iterable<Node> {
                     ) {
                 if (node.equals(last)) {
                     ArrayList<Node> path = new ArrayList<>();
-                    if (currentNode.equals(first)){
+                    if (currentNode.equals(first)) {
                         path.add(last);
                         return path;
                     }
                     path.add(last);
                     path.add(0, currentNode);
-                    while (map.get(currentNode)!=first){
+                    while (map.get(currentNode) != first) {
                         path.add(0, map.get(currentNode));
-                        currentNode=map.get(currentNode);
+                        currentNode = map.get(currentNode);
                     }
                     return path;
                 }
-                if (nodes.contains(node)) {
+                if (nodes.contains(node) && (node.getType() != Template.ParkingPlace) && (node.getType() != Template.Departure)) {
                     queue.offer(node);
                     nodes.remove(node);
                     map.put(node, currentNode);
@@ -186,6 +187,14 @@ public class Graph implements Iterable<Node> {
             return getPath1(entry, freeParkingPlaces.remove(0));
         }
         else return null;
+    }
+
+    public boolean hasFreeParkingPlaces(){
+        return freeParkingPlaces.size()>0;
+    }
+
+    public void freeParkingPlace(Node parkingPlace){
+        freeParkingPlaces.add(parkingPlace);
     }
 
 
