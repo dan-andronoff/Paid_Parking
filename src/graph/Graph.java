@@ -119,6 +119,10 @@ public class Graph implements Iterable<Node> {
                     ) {
                 if (node.equals(last)) {
                     ArrayList<Node> path = new ArrayList<>();
+                    if (currentNode.equals(first)){
+                        path.add(last);
+                        return path;
+                    }
                     path.add(last);
                     path.add(0, currentNode);
                     while (map.get(currentNode)!=first){

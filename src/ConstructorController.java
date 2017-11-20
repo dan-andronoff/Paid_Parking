@@ -309,16 +309,11 @@ public class ConstructorController {
             private long lastHighwayReverse = 0;
             private long lastHighway = 7_000_000_00L;
             private Graph graph = new Graph(modelingParking);
-            {
-                for (int i=0; i<graph.getNodesList().size(); i++) {
-                        System.out.println(graph.getNodesList().get(i)+ " " + graph.getNodesList().get(i).getType().toString() + " " + graph.getNodesList().get(i).getAdjacentNodes());
-                }
-            }
 
             ArrayList<Car> cars = new ArrayList<>();
             @Override
             public void handle(long now) {
-                if (now - lastHighwayReverse > 8_000_000_00L) {
+                if (now - lastHighwayReverse > 12_000_000_00L) {
                     Car car = new Car(graphicsContextModeling.getCanvas().getWidth()+50,modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+75);
                     cars.add(car);
                     modeling.getChildren().add(car);
@@ -347,7 +342,7 @@ public class ConstructorController {
                     System.out.println(modeling.getChildren().size());
                     lastHighwayReverse = now;
                 }
-                if (now - lastHighway > 8_000_000_00L) {
+                if (now - lastHighway > 14_000_000_00L) {
                     Car car = new Car(-50,modelingParking.getVERTICAL_MARGIN()+modelingParking.getFunctionalBlockV()*size+25);
                     cars.add(car);
                     modeling.getChildren().add(car);
@@ -371,7 +366,6 @@ public class ConstructorController {
 
                     car.setPath(graph.getPathToFreeParkingPlace());
                     if (car.getPath()!=null) {
-                        System.out.println(car.getPath());
                         for (Node step : car.getPath()
                                 ) {
                             path.getElements().add(new LineTo(step.getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
@@ -379,7 +373,11 @@ public class ConstructorController {
                         }
                     }
                     PathTransition pathTransition = new PathTransition();
-                    pathTransition.setDuration(Duration.millis(16000));
+                    if (car.getPath()!=null) {
+                        pathTransition.setDuration(Duration.millis(graph.getEntry().getI() * 1000 + car.getPath().size() * 1000
+                                + modelingParking.getHORIZONTAL_MARGIN() / size * 1000));
+                    }
+                    else pathTransition.setDuration(Duration.millis(4000));
                     pathTransition.setNode(car);
                     pathTransition.setPath(path);
                     pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
