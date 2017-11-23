@@ -12,6 +12,9 @@ public class Parking implements Serializable {
     private transient GraphicsContext graphicsContext;
     private int size;
 
+    private int entryI = -1;
+    private int entryJ = -1;
+
     public void setGraphicsContext(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
     }
@@ -56,6 +59,8 @@ public class Parking implements Serializable {
                     parking[i][j].setGraphicsContext(graphicsContext);
                 }
             }
+        entryI = oldParking.entryI;
+        entryJ = oldParking.entryJ;
     }
 
     public FunctionalBlock getFunctionalBlock(int i, int j) {
@@ -86,6 +91,10 @@ public class Parking implements Serializable {
     public void createFunctionalBlock(double x, double y, Template template) {
         int i = ((int) (x - HORIZONTAL_MARGIN)) / size;
         int j = ((int) (y - VERTICAL_MARGIN)) / size;
+        if(i==entryI&&j==entryJ){
+            entryI=-1;
+            entryJ=-1;
+        }
         switch (template) {
             case CashBox:
                 parking[i][j] = new CashBox(graphicsContext);
@@ -101,6 +110,12 @@ public class Parking implements Serializable {
                 break;
             case Entry:
                 parking[i][j] = new Entry(graphicsContext);
+                if (entryI!=-1&&entryJ!=-1){
+                    parking[entryI][entryJ]=new Road(graphicsContext);
+                    drawFunctionalBlock(entryI*size+HORIZONTAL_MARGIN, entryJ*size+VERTICAL_MARGIN);
+                }
+                entryI=i;
+                entryJ=j;
                 break;
             case Departure:
                 parking[i][j] = new Departure(graphicsContext);
