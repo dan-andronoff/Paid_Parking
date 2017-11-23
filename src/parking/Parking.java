@@ -14,6 +14,44 @@ public class Parking implements Serializable {
 
     private int entryI = -1;
     private int entryJ = -1;
+    private int departureI = -1;
+    private int departureJ = -1;
+    private int infoTableI = -1;
+    private int infoTableJ = -1;
+    private int cashBoxI = -1;
+    private int cashBoxJ = -1;
+
+    public int getEntryI() {
+        return entryI;
+    }
+
+    public int getEntryJ() {
+        return entryJ;
+    }
+
+    public int getDepartureI() {
+        return departureI;
+    }
+
+    public int getDepartureJ() {
+        return departureJ;
+    }
+
+    public int getInfoTableI() {
+        return infoTableI;
+    }
+
+    public int getInfoTableJ() {
+        return infoTableJ;
+    }
+
+    public int getCashBoxI() {
+        return cashBoxI;
+    }
+
+    public int getCashBoxJ() {
+        return cashBoxJ;
+    }
 
     public void setGraphicsContext(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
@@ -46,6 +84,10 @@ public class Parking implements Serializable {
         HIGHWAY_SIZE = 2 * size;
         HORIZONTAL_MARGIN = graphicsContext.getCanvas().getWidth() / 2 - functionalBlockH * size / 2;
         VERTICAL_MARGIN = graphicsContext.getCanvas().getHeight() / 2 - functionalBlockV * size / 2 - HIGHWAY_SIZE / 2;
+        for (int i = 0; i < functionalBlockH; i++)
+            for (int j = 0; j < functionalBlockV; j++) {
+                parking[i][j] = new Road(graphicsContext);
+            }
     }
 
     public Parking(int functionalBlockH, int functionalBlockV, GraphicsContext graphicsContext, int size, Parking oldParking) {
@@ -54,13 +96,20 @@ public class Parking implements Serializable {
         int minV = (functionalBlockV > oldParking.functionalBlockV) ? oldParking.functionalBlockV : functionalBlockV;
         for (int i = 0; i < minH; i++)
             for (int j = 0; j < minV; j++) {
-                if (oldParking.parking[i][j]!=null){
-                    parking[i][j] = oldParking.parking[i][j];
-                    parking[i][j].setGraphicsContext(graphicsContext);
-                }
+                parking[i][j] = oldParking.parking[i][j];
+                parking[i][j].setGraphicsContext(graphicsContext);
             }
+        for (int i = minH; i < functionalBlockH; i++)
+            for (int j = minV; j < functionalBlockV; j++)
+                parking[i][j]=new Road(graphicsContext);
         entryI = oldParking.entryI;
         entryJ = oldParking.entryJ;
+        departureI = oldParking.departureI;
+        departureJ = oldParking.departureJ;
+        infoTableI = oldParking.infoTableI;
+        infoTableJ = oldParking.infoTableJ;
+        cashBoxI = oldParking.cashBoxI;
+        cashBoxJ = oldParking.cashBoxJ;
     }
 
     public FunctionalBlock getFunctionalBlock(int i, int j) {
@@ -95,12 +144,36 @@ public class Parking implements Serializable {
             entryI=-1;
             entryJ=-1;
         }
+        if(i==departureI&&j==departureJ){
+            departureI=-1;
+            departureJ=-1;
+        }
+        if(i==infoTableI&&j==infoTableJ){
+            infoTableI=-1;
+            infoTableJ=-1;
+        }
+        if(i==cashBoxI&&j==cashBoxJ){
+            cashBoxI=-1;
+            cashBoxJ=-1;
+        }
         switch (template) {
             case CashBox:
                 parking[i][j] = new CashBox(graphicsContext);
+                if (cashBoxI!=-1&&cashBoxJ!=-1){
+                    parking[cashBoxI][cashBoxJ]=new Road(graphicsContext);
+                    drawFunctionalBlock(cashBoxI*size+HORIZONTAL_MARGIN, cashBoxJ*size+VERTICAL_MARGIN);
+                }
+                cashBoxI=i;
+                cashBoxJ=j;
                 break;
             case InfoTable:
                 parking[i][j] = new InfoTable(graphicsContext);
+                if (infoTableI!=-1&&infoTableJ!=-1){
+                    parking[infoTableI][infoTableJ]=new Road(graphicsContext);
+                    drawFunctionalBlock(infoTableI*size+HORIZONTAL_MARGIN, infoTableJ*size+VERTICAL_MARGIN);
+                }
+                infoTableI=i;
+                infoTableJ=j;
                 break;
             case Road:
                 parking[i][j] = new Road(graphicsContext);
@@ -119,6 +192,12 @@ public class Parking implements Serializable {
                 break;
             case Departure:
                 parking[i][j] = new Departure(graphicsContext);
+                if (departureI!=-1&&departureJ!=-1){
+                    parking[departureI][departureJ]=new Road(graphicsContext);
+                    drawFunctionalBlock(departureI*size+HORIZONTAL_MARGIN, departureJ*size+VERTICAL_MARGIN);
+                }
+                departureI=i;
+                departureJ=j;
                 break;
             case ParkingPlace:
                 parking[i][j] = new ParkingPlace(graphicsContext);

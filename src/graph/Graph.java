@@ -36,7 +36,7 @@ public class Graph implements Iterable<Node> {
                 if (parking.getParking()[i][j] instanceof ParkingPlace){
                     Node node = new Node(Template.ParkingPlace, i, j);
                     nodesList.add(node);
-                    freeParkingPlaces.add(node);
+                    freeParkingPlaces.add(new ParkingPlaceNode(node));
                 }
                 if (parking.getParking()[i][j] instanceof Entry){
                     Node node = new Node(Template.Entry, i, j);
@@ -64,7 +64,7 @@ public class Graph implements Iterable<Node> {
             }
             if(indexI<parking.getFunctionalBlockH()-1){
                 for (int j=0; j<size;j++){
-                    if ((nodesList.get(j).getI() == indexI+1)&&(nodesList.get(j).getJ() == indexJ))                                                                                                                        //КАКАШКА
+                    if ((nodesList.get(j).getI() == indexI+1)&&(nodesList.get(j).getJ() == indexJ))
                         if (nodesList.get(j).getType()!=Template.ParkingPlace||nodesList.get(i).getType()!=Template.ParkingPlace)
                             nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
                 }
@@ -175,16 +175,13 @@ public class Graph implements Iterable<Node> {
         return false;
     }
 
-    private ArrayList<Node> freeParkingPlaces = new ArrayList<>();
+    private PriorityQueue<ParkingPlaceNode> freeParkingPlaces = new PriorityQueue<>();
 
-    public ArrayList<Node> getFreeParkingPlaces() {
-        return freeParkingPlaces;
-    }
 
     public ArrayList<Node> getPathToFreeParkingPlace(){
 
         if (freeParkingPlaces.size()>0) {
-            return getPath1(entry, freeParkingPlaces.remove(0));
+            return freeParkingPlaces.remove().pathToEntry;
         }
         else return null;
     }
@@ -194,33 +191,38 @@ public class Graph implements Iterable<Node> {
     }
 
     public void freeParkingPlace(Node parkingPlace){
-        freeParkingPlaces.add(parkingPlace);
+        freeParkingPlaces.add(new ParkingPlaceNode(parkingPlace));
     }
 
+    public class ParkingPlaceNode implements Comparable<ParkingPlaceNode>{
 
+        private Node parkingPlace;
+        private ArrayList<Node> pathToEntry;
+        private ArrayList<Node> pathToDeparture;
 
-    /*public static void main(String[] s){
-        Parking parking = new Parking(3, 3, null, 0);
-        parking.setParking(new FunctionalBlock[][]{
-                new FunctionalBlock[]{new ParkingPlace(null), new ParkingPlace(null), new ParkingPlace(null)},
-                new FunctionalBlock[]{new Lawn(null), new Lawn(null), new Lawn(null)},
-                new FunctionalBlock[]{new Entry(null), new Departure(null), new Lawn(null)}
-        });
-        Graph g = new Graph(parking);
-        for (int i=0; i<g.nodesList.size(); i++) {
-            for (int j = 0; j < g.nodesList.size(); j++) {
-                System.out.print(g.isReachable(g.nodesList.get(i), g.nodesList.get(j)) + " ");
-            }
-            System.out.println();
+        public Node getParkingPlace() {
+            return parkingPlace;
         }
 
-        for (int i=0; i<g.nodesList.size(); i++) {
-            for (int j = 0; j < g.nodesList.size(); j++) {
-                System.out.print(g.getPath(g.nodesList.get(i), g.nodesList.get(j)) + " ");
-            }
-            System.out.println("***");
+        public ArrayList<Node> getPathToEntry() {
+            return pathToEntry;
         }
-    }*/
+
+        public ArrayList<Node> getPathToDeparture() {
+            return pathToDeparture;
+        }
+
+        public ParkingPlaceNode(Node parkingPlace){
+            this.parkingPlace = parkingPlace;
+            pathToEntry = Graph.this.getPath1(Graph.this.entry, parkingPlace);
+            pathToDeparture = Graph.this.getPath1(parkingPlace, Graph.this.departure);
+        }
+
+        @Override
+        public int compareTo(ParkingPlaceNode o) {
+            return pathToEntry.size()-o.pathToEntry.size();
+        }
+    }
 
     @Override
     public Iterator<Node> iterator() {
