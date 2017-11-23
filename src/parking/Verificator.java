@@ -88,12 +88,15 @@ public class Verificator {
 
     private static boolean checkPaths(Parking parking){
         Graph graph = new Graph(parking);
-        for (Node node: graph) {
-            if (!graph.isReachable(graph.getEntry(), node)){
-                return false;
+        if (graph.getEntry()!=null) {
+            for (Node node : graph) {
+                if (!graph.isReachable(graph.getEntry(), node)) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        else return false;
     }
 
     private static boolean hasNullFunctionalBlocks(Parking parking){
