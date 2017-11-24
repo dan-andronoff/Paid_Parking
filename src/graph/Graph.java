@@ -36,7 +36,6 @@ public class Graph implements Iterable<Node> {
                 if (parking.getParking()[i][j] instanceof ParkingPlace){
                     Node node = new Node(Template.ParkingPlace, i, j);
                     nodesList.add(node);
-                    freeParkingPlaces.add(new ParkingPlaceNode(node));
                 }
                 if (parking.getParking()[i][j] instanceof Entry){
                     Node node = new Node(Template.Entry, i, j);
@@ -82,6 +81,13 @@ public class Graph implements Iterable<Node> {
                         if (nodesList.get(j).getType()!=Template.ParkingPlace||nodesList.get(i).getType()!=Template.ParkingPlace)
                             nodesList.get(i).getAdjacentNodes().add(nodesList.get(j));
                 }
+            }
+        }
+        if (entry!=null && departure!=null) {
+            for (Node node : nodesList
+                    ) {
+                if (node.getType() == Template.ParkingPlace)
+                    freeParkingPlaces.add(new ParkingPlaceNode(node));
             }
         }
     }
@@ -178,10 +184,10 @@ public class Graph implements Iterable<Node> {
     private PriorityQueue<ParkingPlaceNode> freeParkingPlaces = new PriorityQueue<>();
 
 
-    public ArrayList<Node> getPathToFreeParkingPlace(){
+    public ParkingPlaceNode getFreeParkingPlace(){
 
         if (freeParkingPlaces.size()>0) {
-            return freeParkingPlaces.remove().pathToEntry;
+            return freeParkingPlaces.remove();
         }
         else return null;
     }
@@ -190,8 +196,8 @@ public class Graph implements Iterable<Node> {
         return freeParkingPlaces.size()>0;
     }
 
-    public void freeParkingPlace(Node parkingPlace){
-        freeParkingPlaces.add(new ParkingPlaceNode(parkingPlace));
+    public void freeParkingPlace(ParkingPlaceNode parkingPlace){
+        freeParkingPlaces.add(parkingPlace);
     }
 
     public class ParkingPlaceNode implements Comparable<ParkingPlaceNode>{
@@ -199,10 +205,6 @@ public class Graph implements Iterable<Node> {
         private Node parkingPlace;
         private ArrayList<Node> pathToEntry;
         private ArrayList<Node> pathToDeparture;
-
-        public Node getParkingPlace() {
-            return parkingPlace;
-        }
 
         public ArrayList<Node> getPathToEntry() {
             return pathToEntry;
@@ -218,9 +220,22 @@ public class Graph implements Iterable<Node> {
             pathToDeparture = Graph.this.getPath1(parkingPlace, Graph.this.departure);
         }
 
+        public int getI(){
+            return parkingPlace.getI();
+        }
+
+        public int getJ(){
+            return parkingPlace.getJ();
+        }
+
         @Override
         public int compareTo(ParkingPlaceNode o) {
             return pathToEntry.size()-o.pathToEntry.size();
+        }
+
+        @Override
+        public String toString(){
+            return parkingPlace.toString();
         }
     }
 
@@ -228,6 +243,4 @@ public class Graph implements Iterable<Node> {
     public Iterator<Node> iterator() {
         return nodesList.iterator();
     }
-
-
 }

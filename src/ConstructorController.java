@@ -240,8 +240,8 @@ public class ConstructorController {
         if (message == null) {
             modelingParking = new Parking(constructorParking.getFunctionalBlockH(), constructorParking.getFunctionalBlockV(), graphicsContextModeling, size, constructorParking);
             clearModelingContext();
-            modelingParking.drawFunctionalBlocks();
-            modelingParking.drawHighway();
+            modelingParking.drawFunctionalBlocksInModeling();
+            modelingParking.drawHighwayInModeling();
             SingleSelectionModel<Tab> singleSelectionModel = tabPane.getSelectionModel();
             singleSelectionModel.select(1);
         }
@@ -286,9 +286,8 @@ public class ConstructorController {
             String message = getErrorMessage(modelingParking);
             if (message == null) {
                 clearModelingContext();
-                modelingParking.drawHighway();
-                modelingParking.drawMarkup();
-                modelingParking.drawFunctionalBlocks();
+                modelingParking.drawHighwayInModeling();
+                modelingParking.drawFunctionalBlocksInModeling();
 
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -369,10 +368,8 @@ public class ConstructorController {
 
                         // Путь от въезда до парковочного места
 
-                        ArrayList<Node> pathToFreeParkingPlace = graph.getPathToFreeParkingPlace();
-                        car.setPath(pathToFreeParkingPlace);
-                        car.setParkingPlace(pathToFreeParkingPlace.get(pathToFreeParkingPlace.size() - 1));
-                        for (Node step : car.getPath()
+                        car.setParkingPlace(graph.getFreeParkingPlace());
+                        for (Node step : car.getPathToEntry()
                                 ) {
                             path.getElements().add(new LineTo(step.getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
                                     step.getJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
@@ -392,7 +389,7 @@ public class ConstructorController {
                             pathTransition1.setPath(emptyPath);
                             pathTransition1.setInterpolator(Interpolator.LINEAR);
                             pathTransition1.setDuration(Duration.millis(0.1));
-                            pathTransition1.setDelay(Duration.millis(Distribution.getUniformDistribution(2000, 10000)));
+                            pathTransition1.setDelay(Duration.millis(Distribution.getUniformDistribution(20000, 100000)));
 
                             pathTransition1.setOnFinished(event1 -> {
                                 PathTransition delay = (PathTransition) event.getSource();
@@ -403,11 +400,10 @@ public class ConstructorController {
 
                                 pathToDeparture.getElements().add(new MoveTo(car_car_car.getParkingPlace().getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
                                         car_car_car.getParkingPlace().getJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
-                                car_car_car.setPath(graph.getPath1(car_car_car.getParkingPlace(), graph.getDeparture()));
 
                                 //Путь от парковочного места до выезда
 
-                                for (Node step : car_car_car.getPath()
+                                for (Node step : car_car_car.getPathToDeparture()
                                         ) {
                                     pathToDeparture.getElements().add(new LineTo(step.getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
                                             step.getJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
@@ -428,7 +424,7 @@ public class ConstructorController {
 
                                 pathToDeparture.getElements().add(new LineTo(modeling.getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25));
 
-                                pathTransitionFromParkingPlace.setDuration(Duration.millis((modelingParking.getHORIZONTAL_MARGIN() / size * 500) + car_car_car.getPath().size() * 500 + (modelingParking.getFunctionalBlockH() - graph.getDeparture().getI()) * 500));
+                                pathTransitionFromParkingPlace.setDuration(Duration.millis((modelingParking.getHORIZONTAL_MARGIN() / size * 500) + car_car_car.getPathToDeparture().size() * 500 + (modelingParking.getFunctionalBlockH() - graph.getDeparture().getI()) * 500));
                                 pathTransitionFromParkingPlace.setPath(pathToDeparture);
                                 pathTransitionFromParkingPlace.setNode(car_car_car);
                                 pathTransitionFromParkingPlace.setPath(pathToDeparture);
@@ -446,7 +442,7 @@ public class ConstructorController {
                             pathTransition1.play();
                         });
                         pathTransition.setDuration(Duration.millis(graph.getEntry().getI() * 500
-                                + (modelingParking.getHORIZONTAL_MARGIN() / size * 500) + car.getPath().size() * 500));
+                                + (modelingParking.getHORIZONTAL_MARGIN() / size * 500) + car.getPathToEntry().size() * 500));
 
                     }
                     else{

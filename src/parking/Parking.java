@@ -137,6 +137,7 @@ public class Parking implements Serializable {
         parking[i][j].render(HORIZONTAL_MARGIN + i * size + 1, VERTICAL_MARGIN + j * size + 1, size - 1);
     }
 
+
     public void createFunctionalBlock(double x, double y, Template template) {
         int i = ((int) (x - HORIZONTAL_MARGIN)) / size;
         int j = ((int) (y - VERTICAL_MARGIN)) / size;
@@ -214,12 +215,38 @@ public class Parking implements Serializable {
                 }
     }
 
+    public void drawFunctionalBlocksInModeling() {
+        for (int i = 0; i < functionalBlockH; i++)
+            for (int j = 0; j < functionalBlockV; j++)
+                if (parking[i][j] != null) {
+                    parking[i][j].render(HORIZONTAL_MARGIN + i * size, VERTICAL_MARGIN + j * size, size);
+                }
+    }
+
     public void drawHighway() {
         String imagePath = "highway_road.jpg";
         Image image = new Image(imagePath);
         for (int i = 0; i < graphicsContext.getCanvas().getWidth() / HIGHWAY_SIZE; i++) {
             graphicsContext.drawImage(image, 2 * i * size, VERTICAL_MARGIN + functionalBlockV * size + 1, HIGHWAY_SIZE, HIGHWAY_SIZE);
         }
+    }
+
+    public void drawHighwayInModeling() {
+        String imagePath = "highway_road.jpg";
+        Image image = new Image(imagePath);
+        for (int i = 0; i < entryI+HORIZONTAL_MARGIN/size; i++) {
+            graphicsContext.drawImage(image, i * size, VERTICAL_MARGIN + functionalBlockV * size, size, HIGHWAY_SIZE);
+        }
+        for (int i = entryI+1+(int)HORIZONTAL_MARGIN/size; i < departureI+(int)HORIZONTAL_MARGIN/size; i++) {
+            graphicsContext.drawImage(image, i * size, VERTICAL_MARGIN + functionalBlockV * size, size, HIGHWAY_SIZE);
+        }
+        for (int i = departureI+1+(int)HORIZONTAL_MARGIN/size; i < graphicsContext.getCanvas().getWidth() / size; i++) {
+            graphicsContext.drawImage(image, i * size, VERTICAL_MARGIN + functionalBlockV * size, size, HIGHWAY_SIZE);
+        }
+        imagePath = "highway_road_ed.jpg";
+        image = new Image(imagePath);
+        graphicsContext.drawImage(image, entryI * size+HORIZONTAL_MARGIN, VERTICAL_MARGIN + functionalBlockV * size, size, HIGHWAY_SIZE);
+        graphicsContext.drawImage(image, departureI * size+HORIZONTAL_MARGIN, VERTICAL_MARGIN + functionalBlockV * size, size, HIGHWAY_SIZE);
     }
 
     public boolean isInParking(int x, int y){

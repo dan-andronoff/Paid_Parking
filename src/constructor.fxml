@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
    <children>
       <BorderPane fx:id="borderPane" layoutX="139.0" layoutY="70.0" prefHeight="681.0" prefWidth="957.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -62,7 +62,7 @@
                                  <children>
                                     <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseRoad" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <GridPane.margin>
-                                          <Insets />
+                                          <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                        <image>
                                           <Image url="@road.jpg" />
@@ -72,31 +72,49 @@
                                        <image>
                                           <Image url="@parking_place.png" />
                                        </image>
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseLawn" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                                       <image>
-                                          <Image url="@lawn.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseEntry" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseEntry" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                        <image>
                                           <Image url="@entry.png" />
                                        </image>
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseDeparture" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseDeparture" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                                        <image>
                                           <Image url="@departure.png" />
                                        </image>
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseCashBox" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseCashBox" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                                        <image>
-                                          <Image url="@cashBox.jpg" />
+                                          <Image url="@cashBox.png" />
                                        </image>
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseInfoTable" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseInfoTable" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
                                        <image>
                                           <Image url="@infoTable.png" />
                                        </image>
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </ImageView>
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseLawn" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="6">
+                                       <image>
+                                          <Image url="@lawn.jpg" />
+                                       </image>
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
                                     </ImageView>
                                  </children>
                               </GridPane>

@@ -12,7 +12,7 @@ public class CashBox extends FunctionalBlock {
 
     @Override
     public void render(double x, double y, int size){
-        String imagePath = "cashBox.jpg";
+        String imagePath = "cashBox.png";
         Image image = new Image(imagePath);
         graphicsContext.drawImage(image, x, y, size, size);
     }
