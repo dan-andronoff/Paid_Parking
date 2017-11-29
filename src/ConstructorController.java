@@ -65,7 +65,7 @@ public class ConstructorController {
         //Инициализация вкладки конструирования
         template = Template.Null;
         size = 50;
-        Canvas canvas = new Canvas(815, 575);
+        Canvas canvas = new Canvas(815, 587);
         graphicsContextConstructor = canvas.getGraphicsContext2D();
         constructorParking = new Parking(4, 4, graphicsContextConstructor, size);
         canvas.setOnMouseClicked(event -> {
@@ -150,6 +150,7 @@ public class ConstructorController {
             if (controller.isSubmitClicked()) {
                 clearConstructorContext();
                 constructorParking = new Parking(controller.getSelectedWidth(), controller.getSelectedHeight(), graphicsContextConstructor, size, constructorParking);
+                constructorParking.drawBackground();
                 constructorParking.drawMarkup();
                 constructorParking.drawHighway();
                 constructorParking.drawFunctionalBlocks();
@@ -168,6 +169,7 @@ public class ConstructorController {
         if (file != null) {
             try (FileInputStream in = new FileInputStream(file.getPath())) {
                 ObjectInputStream objectInputStream = new ObjectInputStream(in);
+                constructorParking.drawBackground();
                 constructorParking = (Parking) objectInputStream.readObject();
                 constructorParking.setGraphicsContext(graphicsContextConstructor);
                 for (int i = 0; i < constructorParking.getFunctionalBlockH(); i++) {
@@ -302,6 +304,7 @@ public class ConstructorController {
             String message = getErrorMessage(modelingParking);
             if (message == null) {
                 clearModelingContext();
+                modelingParking.drawBackground();
                 modelingParking.drawHighwayInModeling();
                 modelingParking.drawFunctionalBlocksInModeling();
 
