@@ -186,6 +186,10 @@ public class Graph implements Iterable<Node> {
         return false;
     }
 
+    public PriorityQueue<ParkingPlaceNode> getFreeParkingPlaces() {
+        return freeParkingPlaces;
+    }
+
     private PriorityQueue<ParkingPlaceNode> freeParkingPlaces = new PriorityQueue<>();
 
 

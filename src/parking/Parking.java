@@ -2,6 +2,7 @@ package parking;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import parking.template.*;
 
 import java.io.Serializable;
@@ -261,6 +262,41 @@ public class Parking implements Serializable {
     public boolean isInParking(int x, int y){
         return x>HORIZONTAL_MARGIN && x < HORIZONTAL_MARGIN + functionalBlockH*size
                 && y>VERTICAL_MARGIN && y < VERTICAL_MARGIN + functionalBlockV*size;
+    }
+
+    public void drawInfoTableInModeling(int count){
+        ((InfoTable)parking[infoTableI][infoTableJ]).renderInModeling(HORIZONTAL_MARGIN+infoTableI*size,VERTICAL_MARGIN+ infoTableJ*size, size, count);
+    }
+
+    public void drawBackground(){
+        String imagePath = "tree.png";
+        Image image = new Image(imagePath);
+        String imagePath2 = "lawn2.png";
+        Image image2 = new Image(imagePath2);
+        for (int i=0; i <graphicsContext.getCanvas().getWidth()/size; i++){
+            for(int j=0; j<graphicsContext.getCanvas().getHeight()/size; j++){
+                graphicsContext.drawImage(image2,i*size,j*size, size,size);
+                //graphicsContext.drawImage(image,i*size, j*size,size,size);
+            }
+        }
+        for (int i=-1; i<1+functionalBlockH;i++){
+            graphicsContext.drawImage(image,HORIZONTAL_MARGIN+i*size, VERTICAL_MARGIN-size,size,size);
+        }
+        for (int i=0; i<functionalBlockV;i++){
+            graphicsContext.drawImage(image, HORIZONTAL_MARGIN-size, VERTICAL_MARGIN+size*i,size,size);
+        }
+        for (int i=0; i<functionalBlockV;i++){
+            graphicsContext.drawImage(image, HORIZONTAL_MARGIN+functionalBlockH*size, VERTICAL_MARGIN+size*i,size,size);
+        }
+        for (int i=1; i<=HORIZONTAL_MARGIN/size;i++){
+            graphicsContext.drawImage(image, HORIZONTAL_MARGIN - i*size, VERTICAL_MARGIN+functionalBlockV*size-size,size,size);
+        }
+        for (int i=0; i<HORIZONTAL_MARGIN/size;i++){
+            graphicsContext.drawImage(image, HORIZONTAL_MARGIN+functionalBlockH*size+i*size, VERTICAL_MARGIN+functionalBlockV*size-size,size,size);
+        }
+        for (int i=0; i<graphicsContext.getCanvas().getWidth()/size;i++){
+            graphicsContext.drawImage(image, i*size, VERTICAL_MARGIN+functionalBlockV*size+2*size,size,size);
+        }
     }
 
     public double getHORIZONTAL_MARGIN() {
