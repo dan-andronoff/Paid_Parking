@@ -102,14 +102,23 @@ public class Parking implements Serializable {
         for (int i = minH; i < functionalBlockH; i++)
             for (int j = minV; j < functionalBlockV; j++)
                 parking[i][j]=new Road(graphicsContext);
-        entryI = oldParking.entryI;
-        entryJ = oldParking.entryJ;
-        departureI = oldParking.departureI;
-        departureJ = oldParking.departureJ;
-        infoTableI = oldParking.infoTableI;
-        infoTableJ = oldParking.infoTableJ;
-        cashBoxI = oldParking.cashBoxI;
-        cashBoxJ = oldParking.cashBoxJ;
+
+        if (oldParking.entryI<functionalBlockH&&oldParking.entryJ<functionalBlockV) {
+            entryI = oldParking.entryI;
+            entryJ = oldParking.entryJ;
+        }
+        if (oldParking.departureI<functionalBlockH&&oldParking.departureJ<functionalBlockV) {
+            departureI = oldParking.departureI;
+            departureJ = oldParking.departureJ;
+        }
+        if (oldParking.infoTableI<functionalBlockH&&oldParking.infoTableJ<functionalBlockV) {
+            infoTableI = oldParking.infoTableI;
+            infoTableJ = oldParking.infoTableJ;
+        }
+        if (oldParking.cashBoxI<functionalBlockH&&oldParking.cashBoxJ<functionalBlockV) {
+            cashBoxI = oldParking.cashBoxI;
+            cashBoxJ = oldParking.cashBoxJ;
+        }
     }
 
     public FunctionalBlock getFunctionalBlock(int i, int j) {
@@ -237,7 +246,7 @@ public class Parking implements Serializable {
         for (int i = 0; i < entryI+HORIZONTAL_MARGIN/size; i++) {
             graphicsContext.drawImage(image, i * size, VERTICAL_MARGIN + functionalBlockV * size, size, HIGHWAY_SIZE);
         }
-        for (int i = entryI+1+(int)HORIZONTAL_MARGIN/size; i < departureI+(int)HORIZONTAL_MARGIN/size; i++) {
+        for (int i = entryI+1+(int)(Math.floor(HORIZONTAL_MARGIN/size)); i < departureI+(int)(Math.ceil(HORIZONTAL_MARGIN/size)); i++) {
             graphicsContext.drawImage(image, i * size, VERTICAL_MARGIN + functionalBlockV * size, size, HIGHWAY_SIZE);
         }
         for (int i = departureI+1+(int)HORIZONTAL_MARGIN/size; i < graphicsContext.getCanvas().getWidth() / size; i++) {

@@ -1,6 +1,7 @@
 package graph;
 
 import parking.Parking;
+import parking.Verificator;
 import parking.template.*;
 
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -83,16 +84,20 @@ public class Graph implements Iterable<Node> {
                 }
             }
         }
-        if (entry!=null && departure!=null) {
+
+    }
+
+    public void fillFreeParkingPlaces(){
+        try {
             for (Node node : nodesList
                     ) {
                 if (node.getType() == Template.ParkingPlace)
                     freeParkingPlaces.add(new ParkingPlaceNode(node));
             }
+        }catch (NullPointerException e){
+            System.out.println("Топология некорректна!");
         }
     }
-
-
     public boolean isReachable(Node first, Node last) {
         Queue<Node> queue = new LinkedList<>();
         ArrayList<Node> nodes = new ArrayList<>(nodesList);

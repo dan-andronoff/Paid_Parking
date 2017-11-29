@@ -305,6 +305,9 @@ public class ConstructorController {
             private long lastHighwayReverse = 0;
             private long lastHighway = 7_000_000_00L;
             private Graph graph = new Graph(modelingParking);
+            {
+                graph.fillFreeParkingPlaces();
+            }
 
             ArrayList<Car> cars = new ArrayList<>();
             @Override
