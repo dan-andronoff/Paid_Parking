@@ -288,7 +288,7 @@ public class Parking implements Serializable {
         for (int i=0; i<functionalBlockV;i++){
             graphicsContext.drawImage(image, HORIZONTAL_MARGIN+functionalBlockH*size, VERTICAL_MARGIN+size*i,size,size);
         }
-        for (int i=1; i<=HORIZONTAL_MARGIN/size;i++){
+        for (int i=1; i<=HORIZONTAL_MARGIN/size+1;i++){
             graphicsContext.drawImage(image, HORIZONTAL_MARGIN - i*size, VERTICAL_MARGIN+functionalBlockV*size-size,size,size);
         }
         for (int i=0; i<HORIZONTAL_MARGIN/size;i++){

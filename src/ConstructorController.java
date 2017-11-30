@@ -16,19 +16,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import modeling.Car;
-import modeling.Distribution;
+import modeling.*;
 import parking.Parking;
 import parking.Verificator;
 import parking.VerificatorError;
-import parking.template.InfoTable;
 import parking.template.Template;
 
 import java.io.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ConstructorController {
 
@@ -59,6 +59,10 @@ public class ConstructorController {
     Pane modeling;
     @FXML
     TabPane tabPane;
+
+    //Параметры для modeling
+    private double probability = 1;
+    private IntervalGetter intervalGetter = new DeterminateIntervalGetter(1);
 
     @FXML
     public void initialize() {
@@ -144,6 +148,8 @@ public class ConstructorController {
             controller.setInitialWidth(constructorParking.getFunctionalBlockH());
             controller.setInitialHeight(constructorParking.getFunctionalBlockV());
             controller.setDialogStage(dialogStage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(stage);
             // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
             dialogStage.showAndWait();
 
@@ -324,17 +330,21 @@ public class ConstructorController {
             private long lastHighwayReverse = 0;
             private long lastHighway = 7_000_000_00L;
             private Graph graph = new Graph(modelingParking);
+            Random random = new Random();
 
             {
                 graph.fillFreeParkingPlaces();
                 modelingParking.drawInfoTableInModeling(graph.getFreeParkingPlaces().size());
+
             }
 
             ArrayList<Car> cars = new ArrayList<>();
 
             @Override
             public void handle(long now) {
-                if (now - lastHighwayReverse > 12_000_000_00L) {
+                double k = intervalGetter.getInterval();
+                if (now - lastHighwayReverse > k *10_000_000_00L) {
+                    System.out.println(k);
                     Car car = new Car(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
                     cars.add(car);
                     modeling.getChildren().add(car);
@@ -363,7 +373,9 @@ public class ConstructorController {
                     System.out.println(modeling.getChildren().size());
                     lastHighwayReverse = now;
                 }
-                if (now - lastHighway > 14_000_000_00L) {
+                k=intervalGetter.getInterval();
+                if (now - lastHighway > k * 10_000_000_00L) {
+                    System.out.println(k);
                     Car car = new Car(-50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25);
                     cars.add(car);
                     modeling.getChildren().add(car);
@@ -385,7 +397,7 @@ public class ConstructorController {
                         pathNext.getElements().add(new MoveTo(graph.getEntry().getI() * size + modelingParking.getHORIZONTAL_MARGIN() - 25,
                                 modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25));
 
-                        if (graph.hasFreeParkingPlaces()) {
+                        if (random.nextDouble()<probability&&graph.hasFreeParkingPlaces()) {
 
 
                             //Поворот на парковку
@@ -525,5 +537,56 @@ public class ConstructorController {
             }
         };
         animationTimer.start();
+    }
+
+
+    @FXML
+    public void onModelingCarSettingsClick() {
+        try {
+            // Загружаем fxml-файл и создаём новую сцену
+            // для всплывающего диалогового окна.
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("modeling_car_settings.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            // Создаём диалоговое окно Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Параметры потока автомобилей");
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            // Передаём адресата в контроллер.
+            ModelingCarSettingsController controller = loader.getController();
+            //controller.setInitialWidth(constructorParking.getFunctionalBlockH());
+            //controller.setInitialHeight(constructorParking.getFunctionalBlockV());
+            controller.setProbability(probability);
+            controller.setDialogStage(dialogStage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(stage);
+            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+            dialogStage.showAndWait();
+            if (controller.isSubmitClicked()){
+                probability = controller.getSelectedCarEnterProbability();
+                switch (controller.getStreamType()){
+                    case "Детерминированный":
+                        intervalGetter = new DeterminateIntervalGetter(controller.getSelectedIntervalLength());
+                        break;
+                    case "Случайный":
+                        switch (controller.getDistribution()){
+                            case "Нормальный":
+                                intervalGetter = new NormalIntervalGetter(controller.getSelectedM(), controller.getSelectedD());
+                                break;
+                            case "Показательный":
+                                intervalGetter = new ExponentialIntervalGetter(controller.getSelectedI());
+                                break;
+                            case "Равномерный":
+                                intervalGetter = new UniformIntervalGetter(controller.getSelectedL(), controller.getSelectedR());
+                                break;
+                        }
+                        break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

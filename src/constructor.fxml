@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
    <children>
       <BorderPane fx:id="borderPane" layoutX="139.0" layoutY="70.0" prefHeight="681.0" prefWidth="957.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -209,7 +209,7 @@
                                                 <Image url="@parking_settings.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="47.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                                          <ImageView fitHeight="47.0" fitWidth="49.0" onMouseClicked="#onModelingCarSettingsClick" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                                              <image>
                                                 <Image url="@trafic_settings.png" />
                                              </image>
