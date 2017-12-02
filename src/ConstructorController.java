@@ -393,7 +393,7 @@ public class ConstructorController {
                 Path path = new Path();
                 path.getElements().add(new MoveTo(car.getX(),
                         car.getY()));
-                
+
                 PathTransition pathTransition = new PathTransition();
 
                 //Путь от начала шоссе до въезда

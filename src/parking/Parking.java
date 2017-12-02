@@ -3,6 +3,8 @@ package parking;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import parking.template.*;
 
 import java.io.Serializable;
@@ -299,6 +301,25 @@ public class Parking implements Serializable {
         }
     }
 
+    public void drawParkingNumbers(){
+        for (int j=0, number=1; j<functionalBlockV; j++)
+            for (int i=0; i<functionalBlockH; i++){
+             if (parking[i][j] instanceof ParkingPlace)
+             {
+                 graphicsContext.setFill(Color.web("#e59711"));
+                 graphicsContext.setFont(Font.font("Arial", size/2));
+                 if (number<10){
+                     graphicsContext.fillText(Integer.toString(number), i*size+HORIZONTAL_MARGIN + size / 2 - size / 6.998138688, j*size+VERTICAL_MARGIN + size / 2 + size / 6);
+                 }
+                 else {
+                     graphicsContext.fillText(Integer.toString(number), i*size+HORIZONTAL_MARGIN + size / 2 - size / 3.5, j*size+VERTICAL_MARGIN + size / 2 + size / 6);
+                 }
+
+                 graphicsContext.setFill(Color.BLACK);
+                 number++;
+             }
+        }
+    }
     public double getHORIZONTAL_MARGIN() {
         return HORIZONTAL_MARGIN;
     }
