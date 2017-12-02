@@ -1,9 +1,9 @@
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import modeling.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,13 +47,21 @@ public class ModelingCarSettingsController {
     private boolean isSubmitClicked = false;
     private Stage dialogStage;
 
+    private IntervalGetter intervalGetter;
+
     @FXML
-    public void initialize(){
+    public void initialize() {
         type.getItems().add("Детерминированный");
         type.getItems().add("Случайный");
         distributionChoiceBox.getItems().add("Нормальный");
         distributionChoiceBox.getItems().add("Показательный");
         distributionChoiceBox.getItems().add("Равномерный");
+        lSpinner.valueProperty().addListener((ObservableValue<? extends Double> observable, Double oldValue, Double newValue) -> {
+            ((SpinnerValueFactory.DoubleSpinnerValueFactory)rSpinner.getValueFactory()).setMin(newValue);
+        });
+        mSpinner.valueProperty().addListener((ObservableValue<? extends Double> observable, Double oldValue, Double newValue) -> {
+            ((SpinnerValueFactory.DoubleSpinnerValueFactory)dSpinner.getValueFactory()).setMax(newValue/3 - ((newValue/3)%0.1));
+        });
     }
 
     @FXML
@@ -99,36 +107,8 @@ public class ModelingCarSettingsController {
         return probability.getValue();
     }
 
-    public double getSelectedIntervalLength(){
-        return intervalSpinner.getValue();
-    }
-
-    public double getSelectedM(){
-        return mSpinner.getValue();
-    }
-
-    public double getSelectedD(){
-        return dSpinner.getValue();
-    }
-
-    public double getSelectedI(){
-        return iSpinner.getValue();
-    }
-
-    public double getSelectedL(){
-        return lSpinner.getValue();
-    }
-
-    public double getSelectedR(){
-        return rSpinner.getValue();
-    }
-
-    public String getStreamType(){
-        return type.getSelectionModel().getSelectedItem();
-    }
-
-    public String getDistribution(){
-        return distributionChoiceBox.getSelectionModel().getSelectedItem();
+    public IntervalGetter getIntervalGetter() {
+        return intervalGetter;
     }
 
     public void setDialogStage(Stage stage){
@@ -187,6 +167,24 @@ public class ModelingCarSettingsController {
 
     @FXML
     public void onSubmitClicked(){
+        switch (type.getSelectionModel().getSelectedItem()){
+            case "Детерминированный":
+                intervalGetter = new DeterminateIntervalGetter(intervalSpinner.getValue());
+                break;
+            case "Случайный":
+                switch (distributionChoiceBox.getSelectionModel().getSelectedItem()){
+                    case "Нормальный":
+                        intervalGetter = new NormalIntervalGetter(mSpinner.getValue(), dSpinner.getValue());
+                        break;
+                    case "Показательный":
+                        intervalGetter = new ExponentialIntervalGetter(iSpinner.getValue());
+                        break;
+                    case "Равномерный":
+                        intervalGetter = new UniformIntervalGetter(lSpinner.getValue(), rSpinner.getValue());
+                        break;
+                }
+                break;
+        }
         isSubmitClicked = true;
         dialogStage.close();
     }

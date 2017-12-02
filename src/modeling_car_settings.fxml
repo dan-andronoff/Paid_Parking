@@ -30,18 +30,18 @@
             <Spinner fx:id="probability" amountToStepBy="0.1" max="1" min="0" prefHeight="31.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
             <Label text="Тип поптока автомобилей" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Label fx:id="intervalLabel" text="Значение интервала" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Spinner fx:id="intervalSpinner"  amountToStepBy="1.0" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Spinner fx:id="intervalSpinner" amountToStepBy="1.0" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             <Label fx:id="distributionLabel" text="Закон распределения" visible="false" GridPane.rowIndex="2" />
-            <Label fx:id="mLabel" text="Математическое ожидание" visible="false" GridPane.rowIndex="3" />
+            <Label fx:id="mLabel"  text="Математическое ожидание" visible="false" GridPane.rowIndex="3" />
             <Label fx:id="dLabel" text="Среднеквадратическое отклонение" visible="false" GridPane.rowIndex="4" />
-            <Spinner fx:id="mSpinner" amountToStepBy="1.0" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-            <Spinner fx:id="dSpinner" amountToStepBy="0.1" max="5.0" min="0.1" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Spinner fx:id="mSpinner"  amountToStepBy="1.0" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Spinner fx:id="dSpinner"   amountToStepBy="0.1" max="0.3" min="0.1" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
             <Label fx:id="iLabel" text="Интенсивность" visible="false" GridPane.rowIndex="3" />
-            <Spinner fx:id="iSpinner" amountToStepBy="1" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-            <Label fx:id="lLabel" text="Левая граница интервала" visible="false" GridPane.rowIndex="3" />
+            <Spinner fx:id="iSpinner"  amountToStepBy="0.05" max="1" min="0.05" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Label fx:id="lLabel"  text="Левая граница интервала" visible="false" GridPane.rowIndex="3" />
             <Label fx:id="rLabel" text="Правая граница интервала" visible="false" GridPane.rowIndex="4" />
-            <Spinner fx:id="lSpinner" amountToStepBy="1" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-            <Spinner fx:id="rSpinner" amountToStepBy="1" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Spinner fx:id="lSpinner"  amountToStepBy="1.0" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Spinner fx:id="rSpinner"  amountToStepBy="1.0" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
             <Button mnemonicParsing="false" onAction="#onSubmitClicked" prefHeight="34.0" prefWidth="142.0" text="Применить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <ComboBox fx:id="type" onAction="#onChooseType" prefHeight="31.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
             <ComboBox fx:id="distributionChoiceBox" onAction="#onChooseDistribution" prefHeight="31.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />

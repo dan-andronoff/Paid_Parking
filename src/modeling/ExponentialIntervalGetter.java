@@ -2,13 +2,26 @@ package modeling;
 
 public class ExponentialIntervalGetter implements IntervalGetter {
     private double i;
+    private double interval;
 
     public ExponentialIntervalGetter(double i) {
         this.i = i;
+        generateNext();
     }
 
     @Override
     public double getInterval() {
-        return Distribution.getExponentialDistribution(i);
+        return interval;
+    }
+
+    @Override
+    public void generateNext(){
+        interval = Distribution.getExponentialDistribution(i);
+        System.out.println(interval);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

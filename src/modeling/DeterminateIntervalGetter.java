@@ -12,4 +12,9 @@ public class DeterminateIntervalGetter implements IntervalGetter {
     public double getInterval() {
         return interval;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

@@ -12,7 +12,7 @@ public class Distribution {
     }
 
     public static double getExponentialDistribution(double y){
-        return (-Math.exp(random.nextDouble()))/y;
+        return -(Math.log(random.nextDouble()))/y;
     }
 
     public static double getNormalDistribution(double mean, double deviation){

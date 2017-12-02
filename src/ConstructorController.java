@@ -63,6 +63,7 @@ public class ConstructorController {
     //Параметры для modeling
     private double probability = 1;
     private IntervalGetter intervalGetter = new DeterminateIntervalGetter(1);
+    private IntervalGetter reverseIntervalGetter = new DeterminateIntervalGetter(1);
 
     @FXML
     public void initialize() {
@@ -335,16 +336,13 @@ public class ConstructorController {
             {
                 graph.fillFreeParkingPlaces();
                 modelingParking.drawInfoTableInModeling(graph.getFreeParkingPlaces().size());
-
             }
 
             ArrayList<Car> cars = new ArrayList<>();
 
             @Override
             public void handle(long now) {
-                double k = intervalGetter.getInterval();
-                if (now - lastHighwayReverse > k *10_000_000_00L) {
-                    System.out.println(k);
+                if (now - lastHighwayReverse > reverseIntervalGetter.getInterval() *10_000_000_00L) {
                     Car car = new Car(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
                     cars.add(car);
                     modeling.getChildren().add(car);
@@ -371,11 +369,10 @@ public class ConstructorController {
 
                     System.out.println(cars.size());
                     System.out.println(modeling.getChildren().size());
+                    reverseIntervalGetter.generateNext();
                     lastHighwayReverse = now;
                 }
-                k=intervalGetter.getInterval();
-                if (now - lastHighway > k * 10_000_000_00L) {
-                    System.out.println(k);
+                if (now - lastHighway > intervalGetter.getInterval() * 10_000_000_00L) {
                     Car car = new Car(-50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25);
                     cars.add(car);
                     modeling.getChildren().add(car);
@@ -532,6 +529,7 @@ public class ConstructorController {
                     pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
                     pathTransition.setInterpolator(Interpolator.LINEAR);
                     pathTransition.play();
+                    intervalGetter.generateNext();
                     lastHighway = now;
                 }
             }
@@ -566,23 +564,11 @@ public class ConstructorController {
             dialogStage.showAndWait();
             if (controller.isSubmitClicked()){
                 probability = controller.getSelectedCarEnterProbability();
-                switch (controller.getStreamType()){
-                    case "Детерминированный":
-                        intervalGetter = new DeterminateIntervalGetter(controller.getSelectedIntervalLength());
-                        break;
-                    case "Случайный":
-                        switch (controller.getDistribution()){
-                            case "Нормальный":
-                                intervalGetter = new NormalIntervalGetter(controller.getSelectedM(), controller.getSelectedD());
-                                break;
-                            case "Показательный":
-                                intervalGetter = new ExponentialIntervalGetter(controller.getSelectedI());
-                                break;
-                            case "Равномерный":
-                                intervalGetter = new UniformIntervalGetter(controller.getSelectedL(), controller.getSelectedR());
-                                break;
-                        }
-                        break;
+                intervalGetter = controller.getIntervalGetter();
+                try {
+                    reverseIntervalGetter = (IntervalGetter)intervalGetter.clone();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {
