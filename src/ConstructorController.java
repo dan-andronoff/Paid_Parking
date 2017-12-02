@@ -87,8 +87,12 @@ public class ConstructorController {
     //Параметры для modeling
     private Parking modelingParking;
     private double probability = 1;
+    private double cargoRate = 300;
+    private double passengerRate = 200;
     private IntervalGetter intervalGetter = new DeterminateIntervalGetter(1);
     private IntervalGetter reverseIntervalGetter = new DeterminateIntervalGetter(1);
+    private IntervalGetter intervalGetterParking = new DeterminateIntervalGetter(1);
+
     @FXML
     Pane modeling;
     private GraphicsContext graphicsContextModeling;
@@ -395,6 +399,8 @@ public class ConstructorController {
                         car.getY()));
 
                 PathTransition pathTransition = new PathTransition();
+                transitions.add(pathTransition);
+
 
                 //Путь от начала шоссе до въезда
                 path.getElements().add(new LineTo(graph.getEntry().getI() * size + modelingParking.getHORIZONTAL_MARGIN() - 25,
@@ -449,8 +455,8 @@ public class ConstructorController {
                             pathTransition1.setPath(emptyPath);
                             pathTransition1.setInterpolator(Interpolator.LINEAR);
                             pathTransition1.setDuration(Duration.millis(0.1));
-                            pathTransition1.setDelay(Duration.millis(Distribution.getUniformDistribution(20000, 100000)));
-
+                            pathTransition1.setDelay(Duration.millis(intervalGetterParking.getInterval()*1000));
+                            intervalGetterParking.generateNext();
                             pathTransition1.setOnFinished(event2 -> {
                                 PathTransition delay = (PathTransition) event2.getSource();
                                 PathTransition pathTransitionFromParkingPlace = new PathTransition();
@@ -611,6 +617,41 @@ public class ConstructorController {
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onModelingParkingSettingsClick(){
+        try {
+            // Загружаем fxml-файл и создаём новую сцену
+            // для всплывающего диалогового окна.
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("modeling_parking_settings.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            // Создаём диалоговое окно Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Параметры парковки");
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            // Передаём адресата в контроллер.
+            ModelingParkingSettingsController controller = loader.getController();
+            //controller.setInitialWidth(constructorParking.getFunctionalBlockH());
+            //controller.setInitialHeight(constructorParking.getFunctionalBlockV());
+            controller.setCargoRate(cargoRate);
+            controller.setPassengerRate(passengerRate);
+            controller.setDialogStage(dialogStage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(stage);
+            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+            dialogStage.showAndWait();
+            if (controller.isSubmitClicked()){
+                cargoRate = controller.getCargoRate();
+                passengerRate = controller.getPassengerRate();
+                intervalGetterParking = controller.getIntervalGetter();
             }
         } catch (IOException e) {
             e.printStackTrace();

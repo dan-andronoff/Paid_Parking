@@ -205,7 +205,7 @@
                                                 <Image url="@load.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="49.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                                          <ImageView fitHeight="49.0" fitWidth="68.0" onMouseClicked="#onModelingParkingSettingsClick" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                                              <image>
                                                 <Image url="@parking_settings.png" />
                                              </image>
