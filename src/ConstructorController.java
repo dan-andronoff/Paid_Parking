@@ -355,9 +355,10 @@ public class ConstructorController {
         public void handle(long now) {
             if (isStarted) {
                 lastHighwayReverse = now;
+                lastHighway = now;
                 isStarted = false;
             }
-            if (now - lastHighwayReverse > reverseIntervalGetter.getInterval() * 10_000_000_00L) {
+            if (now - lastHighwayReverse > reverseIntervalGetter.getInterval() * 1_000_000_000L) {
                 Car car = new Car(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
                 cars.add(car);
                 modeling.getChildren().add(car);
@@ -410,6 +411,8 @@ public class ConstructorController {
                     PathTransition pathTransitionToEntry = (PathTransition) event.getSource();
                     Car car2 = (Car) pathTransitionToEntry.getNode();
                     PathTransition pathNextTransition = new PathTransition();
+                    transitions.remove(pathTransitionToEntry);
+                    transitions.add(pathNextTransition);
                     Path pathNext = new Path();
                     pathNext.getElements().add(new MoveTo(graph.getEntry().getI() * size + modelingParking.getHORIZONTAL_MARGIN() - 25,
                             modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25));
@@ -445,6 +448,8 @@ public class ConstructorController {
                         pathNextTransition.setOnFinished((event1) -> {
                             PathTransition pathTransitionToParkingPlace = (PathTransition) event1.getSource();
                             PathTransition pathTransition1 = new PathTransition();
+                            transitions.remove(pathTransitionToParkingPlace);
+                            transitions.add(pathTransition1);
                             Car car_car = (Car) pathTransitionToParkingPlace.getNode();
                             Path emptyPath = new Path();
                             emptyPath.getElements().add(new MoveTo(car_car.getParkingPlace().getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
@@ -460,6 +465,8 @@ public class ConstructorController {
                             pathTransition1.setOnFinished(event2 -> {
                                 PathTransition delay = (PathTransition) event2.getSource();
                                 PathTransition pathTransitionFromParkingPlace = new PathTransition();
+                                transitions.remove(delay);
+                                transitions.add(pathTransitionFromParkingPlace);
                                 Car car_car_car = (Car) delay.getNode();
                                 Path pathToDeparture = new Path();
 
@@ -480,6 +487,8 @@ public class ConstructorController {
                                     PathTransition turn = (PathTransition) event3.getSource();
                                     Car car1 = (Car) turn.getNode();
                                     PathTransition pathTransitionToEnd = new PathTransition();
+                                    transitions.remove(turn);
+                                    transitions.add(pathTransitionToEnd);
                                     Path pathToEnd = new Path();
                                     //Поворот на шоссе
 
@@ -505,6 +514,7 @@ public class ConstructorController {
                                     pathTransitionToEnd.setInterpolator(Interpolator.LINEAR);
                                     pathTransitionToEnd.setOnFinished(event4 -> {
                                         PathTransition pathTransition2 = (PathTransition) event4.getSource();
+                                        transitions.remove(pathTransition2);
                                         Car car_car_car_car = (Car) pathTransition2.getNode();
                                         cars.remove(car_car_car_car);
                                         modeling.getChildren().remove(car_car_car_car);
@@ -527,6 +537,7 @@ public class ConstructorController {
                         pathNext.getElements().add(new LineTo(modeling.getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25));
                         pathNextTransition.setOnFinished((event5 -> {
                             PathTransition pathTransition1 = (PathTransition) event5.getSource();
+                            transitions.remove(pathTransition1);
                             Car car_car = (Car) pathTransition1.getNode();
                             cars.remove(car_car);
                             modeling.getChildren().remove(car_car);
@@ -551,6 +562,7 @@ public class ConstructorController {
                 pathTransition.play();
                 intervalGetter.generateNext();
                 lastHighway = now;
+                System.out.println(transitions.size());
             }
         }
 
