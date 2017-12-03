@@ -337,10 +337,15 @@ public class ConstructorController {
     private class ModelingTimer extends AnimationTimer {
         private long lastHighwayReverse = 0;
         private long lastHighway = 0;
-        private Graph graph = new Graph(modelingParking);
-        Random random = new Random();
-
+        private long time;
+        private long timeReverse;
         private boolean isStarted = true;
+
+        private ArrayList<Car> cars = new ArrayList<>();
+        private ArrayList<PathTransition> transitions = new ArrayList<>();
+        private Graph graph = new Graph(modelingParking);
+
+        Random random = new Random();
 
         {
             graph.fillFreeParkingPlaces();
@@ -348,16 +353,17 @@ public class ConstructorController {
             modelingParking.drawParkingNumbers();
         }
 
-        ArrayList<Car> cars = new ArrayList<>();
-        ArrayList<PathTransition> transitions = new ArrayList<>();
+
 
         @Override
         public void handle(long now) {
             if (isStarted) {
-                lastHighwayReverse = now;
-                lastHighway = now;
+                lastHighwayReverse = now-timeReverse;
+                lastHighway = now-time;
                 isStarted = false;
             }
+            timeReverse = now - lastHighwayReverse;
+            time = now - lastHighway;
             if (now - lastHighwayReverse > reverseIntervalGetter.getInterval() * 1_000_000_000L) {
                 Car car = new Car(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
                 cars.add(car);
