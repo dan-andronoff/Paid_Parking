@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
    <children>
       <BorderPane fx:id="borderPane" layoutX="139.0" layoutY="70.0" prefHeight="681.0" prefWidth="957.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -137,29 +137,29 @@
                                           <Insets left="5.0" />
                                        </BorderPane.margin>
                                        <children>
-                                          <ImageView fitHeight="47.0" fitWidth="53.0" onMouseClicked="#onSave" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
+                                          <ImageView fitHeight="51.0" fitWidth="51.0" onMouseClicked="#onSave" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
                                              <image>
-                                                <Image url="@save.png" />
+                                                <Image url="@settings_icon2.png" />
                                              </image>
                                           </ImageView>
                                           <ImageView fitHeight="50.0" fitWidth="57.0" onMouseClicked="#onConstructorSettingsClick" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                                              <image>
-                                                <Image url="@settings.png" />
+                                                <Image url="@setting_icon.png" />
                                              </image>
                                           </ImageView>
                                           <ImageView fitHeight="47.0" fitWidth="47.0" onMouseClicked="#onCheck" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                                              <image>
-                                                <Image url="@check.png" />
+                                                <Image url="@submit_icon2.png" />
                                              </image>
                                           </ImageView>
                                           <ImageView fitHeight="60.0" fitWidth="48.0" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#onConstructorLoad" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
                                              <image>
-                                                <Image url="@load.png" />
+                                                <Image url="@load_icon2.png" />
                                              </image>
                                           </ImageView>
                                           <ImageView fitHeight="51.0" fitWidth="53.0" onMouseClicked="#onGoToModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
                                              <image>
-                                                <Image url="@goToModeling.png" />
+                                                <Image url="@goto_icon2.png" />
                                              </image>
                                           </ImageView>
                                        </children>
