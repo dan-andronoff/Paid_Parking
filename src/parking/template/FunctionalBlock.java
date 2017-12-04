@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
 
-abstract public class FunctionalBlock implements Serializable {
+abstract public class FunctionalBlock implements Serializable, Cloneable {
     protected transient GraphicsContext graphicsContext;
     public abstract void render(double x, double y, int size);
 
@@ -14,5 +14,10 @@ abstract public class FunctionalBlock implements Serializable {
 
     public void setGraphicsContext(GraphicsContext graphicsContext){
         this.graphicsContext=graphicsContext;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

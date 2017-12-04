@@ -99,7 +99,11 @@ public class Parking implements Serializable {
         int minV = (functionalBlockV > oldParking.functionalBlockV) ? oldParking.functionalBlockV : functionalBlockV;
         for (int i = 0; i < minH; i++)
             for (int j = 0; j < minV; j++) {
-                parking[i][j] = oldParking.parking[i][j];
+                try {
+                    parking[i][j] = (FunctionalBlock)oldParking.parking[i][j].clone();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
                 parking[i][j].setGraphicsContext(graphicsContext);
             }
         for (int i = minH; i < functionalBlockH; i++)
