@@ -492,7 +492,11 @@ public class ConstructorController {
                             pathTransition1.setPath(emptyPath);
                             pathTransition1.setInterpolator(Interpolator.LINEAR);
                             pathTransition1.setDuration(Duration.millis(0.1));
-                            pathTransition1.setDelay(Duration.millis(intervalGetterParking.getInterval()*1000));
+
+                            double parkingTime = intervalGetterParking.getInterval();
+                            pathTransition1.setDelay(Duration.millis(parkingTime*1000));
+                            car_car.setPrice(passengerRate * parkingTime/60);
+
                             intervalGetterParking.generateNext();
                             pathTransition1.setOnFinished(event2 -> {
                                 PathTransition delay = (PathTransition) event2.getSource();
