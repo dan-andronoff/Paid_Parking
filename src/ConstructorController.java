@@ -109,6 +109,7 @@ public class ConstructorController {
     private ImageView go_button;
 
     private GraphicsContext graphicsContextModeling;
+    private StatisticController statisticController;
 
     private void clearModelingContext() {
         graphicsContextModeling.clearRect(0, 0, graphicsContextModeling.getCanvas().getWidth(), graphicsContextModeling.getCanvas().getHeight());
@@ -495,7 +496,7 @@ public class ConstructorController {
 
                             double parkingTime = intervalGetterParking.getInterval();
                             pathTransition1.setDelay(Duration.millis(parkingTime*1000));
-                            car_car.setPrice(passengerRate * parkingTime/60);
+                            statisticController.addRecord(new Record(0, "Легковой", passengerRate * parkingTime/60));
 
                             intervalGetterParking.generateNext();
                             pathTransition1.setOnFinished(event2 -> {
@@ -650,6 +651,23 @@ public class ConstructorController {
             stop_button.setImage(new Image("stop_icon.png"));
         }
         else modelingTimer.resumeAnimation();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("statistic.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Создаём диалоговое окно Stage.
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Статистика");
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+        statisticController = loader.getController();
+        // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+        dialogStage.showAndWait();
     }
 
     @FXML

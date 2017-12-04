@@ -14,7 +14,6 @@ public class Car extends ImageView {
     private static final int height = 25;
     private static Random random = new Random();
     private static ArrayList<String> cars = new ArrayList<>();
-    private double price = 0;
 
     static {
         cars.addAll(Arrays.asList("car1.png", "car2.png", "car3.png", "car4.png", "car5.png", "car6.png", "car7.png", "car8.png", "car9.png", "car10.png"));
@@ -34,29 +33,12 @@ public class Car extends ImageView {
         setY(y);
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
     public ArrayList<Node> getPathToEntry() {
         return parkingPlace.getPathToEntry();
     }
 
     public ArrayList<Node> getPathToDeparture() {
         return parkingPlace.getPathToDeparture();
-    }
-
-
-    public double getxPosition() {
-        return getTranslateX();
-    }
-
-    public double getyPosition() {
-        return getTranslateY();
     }
 
     public void setParkingPlace(Graph.ParkingPlaceNode parkingPlace) {
