@@ -196,7 +196,7 @@ public class ConstructorController {
                     }
                 }
                 clearConstructorContext();
-                //constructorParking.drawBackground();
+                constructorParking.drawBackground();
                 constructorParking.drawHighway();
                 constructorParking.drawMarkup();
                 constructorParking.drawFunctionalBlocks();
@@ -333,7 +333,6 @@ public class ConstructorController {
             }
         }
     }
-
 
     private class ModelingTimer extends AnimationTimer {
         private long lastHighwayReverse = 0;
