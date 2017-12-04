@@ -1,6 +1,7 @@
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import modeling.Car;
 
 
@@ -14,6 +15,8 @@ public class StatisticController {
     @FXML
     private TableColumn<Record, Double> price;
 
+    private Stage stage;
+
     @FXML
     public void initialize(){
         number.setCellValueFactory(c -> c.getValue().numberProperty().asObject());
@@ -26,4 +29,11 @@ public class StatisticController {
     }
 
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void close(){
+        stage.close();
+    }
 }

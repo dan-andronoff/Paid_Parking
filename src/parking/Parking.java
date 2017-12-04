@@ -312,6 +312,7 @@ public class Parking implements Serializable {
              {
                  graphicsContext.setFill(Color.web("#e59711"));
                  graphicsContext.setFont(Font.font("Arial", size/2));
+                 ((ParkingPlace)parking[i][j]).setNumber(number);
                  if (number<10){
                      graphicsContext.fillText(Integer.toString(number), i*size+HORIZONTAL_MARGIN + size / 2 - size / 6.998138688, j*size+VERTICAL_MARGIN + size / 2 + size / 6);
                  }

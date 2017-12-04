@@ -25,6 +25,7 @@ import modeling.*;
 import parking.Parking;
 import parking.Verificator;
 import parking.VerificatorError;
+import parking.template.ParkingPlace;
 import parking.template.Template;
 
 import java.io.*;
@@ -496,7 +497,6 @@ public class ConstructorController {
 
                             double parkingTime = intervalGetterParking.getInterval();
                             pathTransition1.setDelay(Duration.millis(parkingTime*1000));
-                            statisticController.addRecord(new Record(0, "Легковой", passengerRate * parkingTime/60));
 
                             intervalGetterParking.generateNext();
                             pathTransition1.setOnFinished(event2 -> {
@@ -527,6 +527,7 @@ public class ConstructorController {
                                     transitions.remove(turn);
                                     transitions.add(pathTransitionToEnd);
                                     Path pathToEnd = new Path();
+                                    statisticController.addRecord(new Record(((ParkingPlace)modelingParking.getParking()[car1.getParkingPlace().getI()][car1.getParkingPlace().getJ()]).getNumber(), "Легковой", passengerRate * parkingTime/60));
                                     //Поворот на шоссе
 
                                     pathToEnd.getElements().add(new MoveTo(modelingParking.getDepartureI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25, modelingParking.getDepartureJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
@@ -649,25 +650,29 @@ public class ConstructorController {
             pause_button.setImage(new Image("pause_icon.png"));
             stop_button.setDisable(false);
             stop_button.setImage(new Image("stop_icon.png"));
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("statistic.fxml"));
+            AnchorPane page = null;
+            try {
+                page = (AnchorPane) loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Создаём диалоговое окно Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Статистика");
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            statisticController = loader.getController();
+            statisticController.setStage(dialogStage);
+            dialogStage.setX(stage.getX()+stage.getWidth());
+            dialogStage.setY(stage.getY());
+            dialogStage.setHeight(stage.getHeight());
+            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+            dialogStage.showAndWait();
         }
         else modelingTimer.resumeAnimation();
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("statistic.fxml"));
-        AnchorPane page = null;
-        try {
-            page = (AnchorPane) loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // Создаём диалоговое окно Stage.
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("Статистика");
-        Scene scene = new Scene(page);
-        dialogStage.setScene(scene);
-        statisticController = loader.getController();
-        // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
-        dialogStage.showAndWait();
     }
 
     @FXML
@@ -684,6 +689,7 @@ public class ConstructorController {
         load_button.setImage(new Image("load_icon2.png"));
         go_button.setDisable(false);
         go_button.setImage(new Image("goto_icon2.png"));
+        statisticController.close();
     }
 
     @FXML
