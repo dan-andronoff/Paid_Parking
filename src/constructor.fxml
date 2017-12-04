@@ -157,7 +157,7 @@
                                                 <Image url="@load_icon2.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="51.0" fitWidth="53.0" onMouseClicked="#onGoToModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
+                                          <ImageView fx:id="go_button" fitHeight="51.0" fitWidth="53.0" onMouseClicked="#onGoToModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
                                              <image>
                                                 <Image url="@goto_icon2.png" />
                                              </image>
@@ -201,7 +201,7 @@
                                           <Insets left="5.0" />
                                        </BorderPane.margin>
                                        <children>
-                                          <ImageView fitHeight="55.0" fitWidth="52.0" onMouseClicked="#onModelingLoad" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="load_button" fitHeight="55.0" fitWidth="52.0" onMouseClicked="#onModelingLoad" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@load_icon2.png" />
                                              </image>
@@ -216,19 +216,19 @@
                                                 <Image url="@trafic_settings.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="48.0" fitWidth="60.0" onMouseClicked="#onStartModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                                          <ImageView fx:id="run_button" disable="true" fitHeight="48.0" fitWidth="60.0" onMouseClicked="#onStartModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                                              <image>
-                                                <Image url="@play_icon.png" />
+                                                <Image url="@play_icon_disabled.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onPauseModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
+                                          <ImageView fx:id="pause_button" disable="true" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onPauseModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
                                              <image>
-                                                <Image url="@pause_icon.png" />
+                                                <Image url="@pause_icon_disabled.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onStopModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
+                                          <ImageView fx:id="stop_button" disable="true" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onStopModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
                                              <image>
-                                                <Image url="@stop_icon.png" />
+                                                <Image url="@stop_icon_disabled.png" />
                                              </image>
                                           </ImageView>
                                        </children>

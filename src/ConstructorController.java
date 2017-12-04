@@ -12,6 +12,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.*;
@@ -77,7 +79,7 @@ public class ConstructorController {
     private Template template;
     private Parking constructorParking;
     @FXML
-    Pane constructor;
+    private Pane constructor;
     private GraphicsContext graphicsContextConstructor;
 
     private void clearConstructorContext() {
@@ -94,7 +96,18 @@ public class ConstructorController {
     private IntervalGetter intervalGetterParking = new DeterminateIntervalGetter(1);
 
     @FXML
-    Pane modeling;
+    private Pane modeling;
+    @FXML
+    private ImageView load_button;
+    @FXML
+    private ImageView run_button;
+    @FXML
+    private ImageView pause_button;
+    @FXML
+    private ImageView stop_button;
+    @FXML
+    private ImageView go_button;
+
     private GraphicsContext graphicsContextModeling;
 
     private void clearModelingContext() {
@@ -277,6 +290,12 @@ public class ConstructorController {
             modelingParking.drawBackground();
             modelingParking.drawFunctionalBlocksInModeling();
             modelingParking.drawHighwayInModeling();
+            run_button.setDisable(false);
+            run_button.setImage(new Image("play_icon.png"));
+            pause_button.setDisable(true);
+            pause_button.setImage(new Image("pause_icon_disabled.png"));
+            stop_button.setDisable(true);
+            stop_button.setImage(new Image("stop_icon_disabled.png"));
             SingleSelectionModel<Tab> singleSelectionModel = tabPane.getSelectionModel();
             singleSelectionModel.select(1);
         } else {
@@ -290,6 +309,7 @@ public class ConstructorController {
     }
 
     //Обработчики для вкладки моделирования
+
 
     @FXML
     public void onModelingLoad() {
@@ -323,6 +343,12 @@ public class ConstructorController {
                 modelingParking.drawBackground();
                 modelingParking.drawHighwayInModeling();
                 modelingParking.drawFunctionalBlocksInModeling();
+                run_button.setDisable(false);
+                run_button.setImage(new Image("play_icon.png"));
+                pause_button.setDisable(true);
+                pause_button.setImage(new Image("pause_icon_disabled.png"));
+                stop_button.setDisable(true);
+                stop_button.setImage(new Image("stop_icon_disabled.png"));
 
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -610,6 +636,14 @@ public class ConstructorController {
             modelingTimer = this.new ModelingTimer();
             modelingTimer.start();
             isStartedModeling = true;
+            load_button.setDisable(true);
+            load_button.setImage(new Image("load_icon2_disabled.png"));
+            go_button.setDisable(true);
+            go_button.setImage(new Image("goto_icon2_disabled.png"));
+            pause_button.setDisable(false);
+            pause_button.setImage(new Image("pause_icon.png"));
+            stop_button.setDisable(false);
+            stop_button.setImage(new Image("stop_icon.png"));
         }
         else modelingTimer.resumeAnimation();
     }
@@ -624,6 +658,10 @@ public class ConstructorController {
         modelingTimer.stopAnimation();
         isStartedModeling = false;
         modelingParking.drawFunctionalBlocksInModeling();
+        load_button.setDisable(false);
+        load_button.setImage(new Image("load_icon2.png"));
+        go_button.setDisable(false);
+        go_button.setImage(new Image("goto_icon2.png"));
     }
 
     @FXML
