@@ -108,6 +108,8 @@ public class ConstructorController {
     private ImageView stop_button;
     @FXML
     private ImageView go_button;
+    @FXML
+    private ImageView table_button;
 
     private GraphicsContext graphicsContextModeling;
     private StatisticController statisticController;
@@ -646,11 +648,8 @@ public class ConstructorController {
             load_button.setImage(new Image("load_icon2_disabled.png"));
             go_button.setDisable(true);
             go_button.setImage(new Image("goto_icon2_disabled.png"));
-            pause_button.setDisable(false);
-            pause_button.setImage(new Image("pause_icon.png"));
             stop_button.setDisable(false);
             stop_button.setImage(new Image("stop_icon.png"));
-
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("statistic.fxml"));
             AnchorPane page = null;
@@ -670,14 +669,25 @@ public class ConstructorController {
             dialogStage.setY(stage.getY());
             dialogStage.setHeight(stage.getHeight());
             // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
-            dialogStage.showAndWait();
+            dialogStage.show();
         }
         else modelingTimer.resumeAnimation();
+        pause_button.setDisable(false);
+        pause_button.setImage(new Image("pause_icon.png"));
+        run_button.setDisable(true);
+        run_button.setImage(new Image("play_icon_disabled.png"));
+        table_button.setDisable(false);
+        table_button.setImage(new Image("table_icon.png"));
     }
 
     @FXML
     public void onPauseModeling() {
         modelingTimer.pauseAnimation();
+        run_button.setDisable(false);
+        run_button.setImage(new Image("play_icon.png"));
+        pause_button.setDisable(true);
+        pause_button.setImage(new Image("pause_icon_disabled.png"));
+
     }
 
     @FXML
@@ -689,7 +699,15 @@ public class ConstructorController {
         load_button.setImage(new Image("load_icon2.png"));
         go_button.setDisable(false);
         go_button.setImage(new Image("goto_icon2.png"));
+        run_button.setDisable(false);
+        run_button.setImage(new Image("play_icon.png"));
         statisticController.close();
+        pause_button.setDisable(true);
+        pause_button.setImage(new Image("pause_icon_disabled.png"));
+        stop_button.setDisable(true);
+        stop_button.setImage(new Image("stop_icon_disabled.png"));
+        table_button.setDisable(true);
+        table_button.setImage(new Image("table_icon_disabled.png"));
     }
 
     @FXML
@@ -762,5 +780,10 @@ public class ConstructorController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void onTableButtonClick(){
+        statisticController.show();
     }
 }

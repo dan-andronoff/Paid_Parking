@@ -185,12 +185,13 @@
                                     <Pane fx:id="modeling" BorderPane.alignment="CENTER" />
                                  </center>
                                  <top>
-                                    <GridPane maxWidth="300.0" prefHeight="50.0" prefWidth="300.0" BorderPane.alignment="TOP_LEFT">
+                                    <GridPane maxWidth="350.0" prefHeight="50.0" prefWidth="350.0" BorderPane.alignment="TOP_LEFT">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="52.0" minWidth="0.0" percentWidth="25.0" prefWidth="51.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="542.0" minWidth="0.0" percentWidth="25.0" prefWidth="46.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="756.0" minWidth="0.0" percentWidth="25.0" prefWidth="42.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="756.0" minWidth="0.0" percentWidth="25.0" prefWidth="105.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="756.0" minWidth="10.0" percentWidth="25.0" prefWidth="105.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="756.0" minWidth="10.0" percentWidth="25.0" prefWidth="105.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="756.0" minWidth="10.0" percentWidth="25.0" prefWidth="105.0" />
                                       </columnConstraints>
@@ -229,6 +230,11 @@
                                           <ImageView fx:id="stop_button" disable="true" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onStopModeling" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
                                              <image>
                                                 <Image url="@stop_icon_disabled.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="table_button" disable="true" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onTableButtonClick" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6">
+                                             <image>
+                                                <Image url="@table_icon_disabled.png" />
                                              </image>
                                           </ImageView>
                                        </children>
