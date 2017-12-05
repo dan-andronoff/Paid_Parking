@@ -11,8 +11,8 @@
           <TableColumn fx:id="number" prefWidth="32.0" text="№" />
           <TableColumn fx:id="type" prefWidth="113.0" text="Тип автомобиля" />
             <TableColumn fx:id="price" prefWidth="62.0" text="Сумма" />
-            <TableColumn fx:id="price1" prefWidth="113.0" text="Время заезда" />
-            <TableColumn fx:id="price11" prefWidth="113.0" text="Время отъезда" />
+            <TableColumn fx:id="arrivalTime" prefWidth="113.0" text="Время заезда" />
+            <TableColumn fx:id="departureTime" prefWidth="113.0" text="Время отъезда" />
         </columns>
       </TableView>
    </children>
