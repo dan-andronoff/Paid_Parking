@@ -14,6 +14,15 @@ public class Car extends ImageView {
     private static final int height = 25;
     private static Random random = new Random();
     private static ArrayList<String> cars = new ArrayList<>();
+    private long arrivalTime;
+
+    public long getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(long arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
 
     static {
         cars.addAll(Arrays.asList("car1.png", "car2.png", "car3.png", "car4.png", "car5.png", "car6.png", "car7.png", "car8.png", "car9.png", "car10.png"));

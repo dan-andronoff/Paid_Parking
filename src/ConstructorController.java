@@ -51,7 +51,7 @@ public class ConstructorController {
         //Инициализация вкладки конструирования
         template = Template.Null;
         size = 50;
-        Canvas canvas = new Canvas(815, 587);
+        Canvas canvas = new Canvas(819, 587);
         graphicsContextConstructor = canvas.getGraphicsContext2D();
         constructorParking = new Parking(4, 4, graphicsContextConstructor, size);
         canvas.setOnMouseClicked(event -> {
@@ -71,7 +71,7 @@ public class ConstructorController {
         constructorParking.drawHighway();
         constructorParking.drawFunctionalBlocks();
         //Инициализация вкладки моделирования
-        canvas = new Canvas(900, 575);
+        canvas = new Canvas(900, 580);
         graphicsContextModeling = canvas.getGraphicsContext2D();
         modeling.getChildren().add(canvas);
     }
@@ -370,6 +370,8 @@ public class ConstructorController {
         private long time;
         private long timeReverse;
         private boolean isStarted = true;
+        private boolean isStartedFirstTime = true;
+        private long startTime;
 
         private ArrayList<Car> cars = new ArrayList<>();
         private ArrayList<PathTransition> transitions = new ArrayList<>();
@@ -391,6 +393,10 @@ public class ConstructorController {
                 lastHighwayReverse = now-timeReverse;
                 lastHighway = now-time;
                 isStarted = false;
+            }
+            if (isStartedFirstTime){
+                startTime = now;
+                isStartedFirstTime = false;
             }
             timeReverse = now - lastHighwayReverse;
             time = now - lastHighway;
@@ -426,7 +432,7 @@ public class ConstructorController {
                 reverseIntervalGetter.generateNext();
                 lastHighwayReverse = now;
             }
-            if (now - lastHighway > intervalGetter.getInterval() * 10_000_000_00L) {
+            if (now - lastHighway > intervalGetter.getInterval() * 1_000_000_000L) {
                 Car car = new Car(-50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25);
                 cars.add(car);
                 modeling.getChildren().add(car);
@@ -499,6 +505,7 @@ public class ConstructorController {
 
                             double parkingTime = intervalGetterParking.getInterval();
                             pathTransition1.setDelay(Duration.millis(parkingTime*1000));
+                            car_car.setArrivalTime(now);
 
                             intervalGetterParking.generateNext();
                             pathTransition1.setOnFinished(event2 -> {
@@ -529,7 +536,7 @@ public class ConstructorController {
                                     transitions.remove(turn);
                                     transitions.add(pathTransitionToEnd);
                                     Path pathToEnd = new Path();
-                                    statisticController.addRecord(new Record(((ParkingPlace)modelingParking.getParking()[car1.getParkingPlace().getI()][car1.getParkingPlace().getJ()]).getNumber(), "Легковой", passengerRate * parkingTime/60));
+                                    statisticController.addRecord(new Record(((ParkingPlace)modelingParking.getParking()[car1.getParkingPlace().getI()][car1.getParkingPlace().getJ()]).getNumber(), "Легковой", passengerRate * parkingTime/60,  (car.getArrivalTime()-startTime)/1_000_000_000, (now-startTime)/1_000_000_000));
                                     //Поворот на шоссе
 
                                     pathToEnd.getElements().add(new MoveTo(modelingParking.getDepartureI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25, modelingParking.getDepartureJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));

@@ -8,12 +8,12 @@ public class Record {
     private StringProperty arrivalTime;
     private StringProperty departureTime;
 
-    public Record(Integer number, String type, Double price, String arrivalTime, String departureTime) {
+    public Record(Integer number, String type, Double price, long arrivalTime, long departureTime) {
         this.number = new SimpleIntegerProperty(number);
         this.type = new SimpleStringProperty(type);
         this.price = new SimpleStringProperty(String.format("%.2f", price));
-        this.arrivalTime = new SimpleStringProperty(arrivalTime);
-        this.departureTime = new SimpleStringProperty(departureTime);
+        this.arrivalTime = new SimpleStringProperty(Long.toString(arrivalTime));
+        this.departureTime = new SimpleStringProperty(Long.toString(departureTime));
     }
 
     public IntegerProperty numberProperty() {
