@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ModelingParkingSettingsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ModelingParkingSettingsController">
    <children>
       <GridPane layoutX="-14.0" layoutY="-14.0" prefHeight="400.0" prefWidth="220.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="-14.0">
         <columnConstraints>
@@ -32,8 +32,8 @@
                   <Insets />
                </GridPane.margin></Spinner>
             <Label text="Тип интервала стоянки автомобилей" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Label fx:id="intervalLabel" text="Значение интервала" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Spinner fx:id="intervalSpinner" amountToStepBy="1.0" max="20.0" min="1.0" prefWidth="220.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label fx:id="intervalLabel" text="Значение интервала" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Spinner fx:id="intervalSpinner" amountToStepBy="1.0" max="20.0" min="1.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             <Label fx:id="distributionLabel" text="Закон распределения" visible="false" GridPane.rowIndex="2" />
             <Label fx:id="mLabel" text="Математическое ожидание" visible="false" GridPane.rowIndex="3" />
             <Label fx:id="dLabel" text="Среднеквадратическое отклонение" visible="false" GridPane.rowIndex="4" />

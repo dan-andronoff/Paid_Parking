@@ -53,6 +53,7 @@ public class ModelingCarSettingsController {
     public void initialize() {
         type.getItems().add("Детерминированный");
         type.getItems().add("Случайный");
+        type.getSelectionModel().select(0);
         distributionChoiceBox.getItems().add("Нормальный");
         distributionChoiceBox.getItems().add("Показательный");
         distributionChoiceBox.getItems().add("Равномерный");
