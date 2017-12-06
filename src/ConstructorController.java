@@ -16,7 +16,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -54,6 +56,7 @@ public class ConstructorController {
         Canvas canvas = new Canvas(819, 587);
         graphicsContextConstructor = canvas.getGraphicsContext2D();
         constructorParking = new Parking(4, 4, graphicsContextConstructor, size);
+
         canvas.setOnMouseClicked(event -> {
                     if (template != Template.Null) {
                         int x = (int) event.getX();
@@ -110,6 +113,8 @@ public class ConstructorController {
     private ImageView go_button;
     @FXML
     private ImageView table_button;
+    @FXML
+    private Canvas modelTimeCanvas;
 
     private GraphicsContext graphicsContextModeling;
     private StatisticController statisticController;
@@ -402,6 +407,10 @@ public class ConstructorController {
                 modelTime.inc();
                 System.out.println(modelTime);
                 lastTimeTick=now;
+                modelTimeCanvas.getGraphicsContext2D().clearRect(0,0,100,50);
+                modelTimeCanvas.getGraphicsContext2D().setFill(Color.BLACK);
+                modelTimeCanvas.getGraphicsContext2D().setFont(Font.font("Arial", size/2));
+                modelTimeCanvas.getGraphicsContext2D().fillText(modelTime.toString(),15,35);
             }
             if (now - lastHighwayReverse > reverseIntervalGetter.getInterval() * 1_000_000_000L) {
                 Car car = new Car(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
@@ -644,6 +653,7 @@ public class ConstructorController {
                  ) {
                 modeling.getChildren().remove(car);
             }
+            modelTimeCanvas.getGraphicsContext2D().clearRect(0,0,100,50);
             cars.clear();
             this.stop();
         }
