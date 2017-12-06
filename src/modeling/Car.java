@@ -14,13 +14,22 @@ public class Car extends ImageView {
     private static final int height = 25;
     private static Random random = new Random();
     private static ArrayList<String> cars = new ArrayList<>();
-    private long arrivalTime;
+    private String arrivalTime;
+    private String departureTime;
 
-    public long getArrivalTime() {
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public String getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(long arrivalTime) {
+    public void setArrivalTime(String arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 

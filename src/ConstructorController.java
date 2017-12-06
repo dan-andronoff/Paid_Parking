@@ -370,14 +370,15 @@ public class ConstructorController {
         private long time;
         private long timeReverse;
         private boolean isStarted = true;
-        private boolean isStartedFirstTime = true;
-        private long startTime;
 
         private ArrayList<Car> cars = new ArrayList<>();
         private ArrayList<PathTransition> transitions = new ArrayList<>();
         private Graph graph = new Graph(modelingParking);
 
-        Random random = new Random();
+        private Random random = new Random();
+        private Time modelTime = new Time();
+        private long lastTimeTick;
+        private long timeTick;
 
         {
             graph.fillFreeParkingPlaces();
@@ -385,21 +386,23 @@ public class ConstructorController {
             modelingParking.drawParkingNumbers();
         }
 
-
-
         @Override
         public void handle(long now) {
             if (isStarted) {
                 lastHighwayReverse = now-timeReverse;
                 lastHighway = now-time;
+                lastTimeTick = now - timeTick;
                 isStarted = false;
-            }
-            if (isStartedFirstTime){
-                startTime = now;
-                isStartedFirstTime = false;
             }
             timeReverse = now - lastHighwayReverse;
             time = now - lastHighway;
+            timeTick = now - lastTimeTick;
+
+            if (now-lastTimeTick>1_000_000_000L){
+                modelTime.inc();
+                System.out.println(modelTime);
+                lastTimeTick=now;
+            }
             if (now - lastHighwayReverse > reverseIntervalGetter.getInterval() * 1_000_000_000L) {
                 Car car = new Car(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
                 cars.add(car);
@@ -505,7 +508,7 @@ public class ConstructorController {
 
                             double parkingTime = intervalGetterParking.getInterval();
                             pathTransition1.setDelay(Duration.millis(parkingTime*1000));
-                            car_car.setArrivalTime(now);
+                            car_car.setArrivalTime(modelTime.toString());
 
                             intervalGetterParking.generateNext();
                             pathTransition1.setOnFinished(event2 -> {
@@ -514,6 +517,7 @@ public class ConstructorController {
                                 transitions.remove(delay);
                                 transitions.add(pathTransitionFromParkingPlace);
                                 Car car_car_car = (Car) delay.getNode();
+                                car_car_car.setDepartureTime(modelTime.toString());
                                 Path pathToDeparture = new Path();
 
                                 pathToDeparture.getElements().add(new MoveTo(car_car_car.getParkingPlace().getI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25,
@@ -536,7 +540,7 @@ public class ConstructorController {
                                     transitions.remove(turn);
                                     transitions.add(pathTransitionToEnd);
                                     Path pathToEnd = new Path();
-                                    statisticController.addRecord(new Record(((ParkingPlace)modelingParking.getParking()[car1.getParkingPlace().getI()][car1.getParkingPlace().getJ()]).getNumber(), "Легковой", passengerRate * parkingTime/60,  (car.getArrivalTime()-startTime)/1_000_000_000, (now-startTime)/1_000_000_000));
+                                    statisticController.addRecord(new Record(((ParkingPlace)modelingParking.getParking()[car1.getParkingPlace().getI()][car1.getParkingPlace().getJ()]).getNumber(), "Легковой", passengerRate * parkingTime/60,  car1.getArrivalTime(), car1.getDepartureTime()));
                                     //Поворот на шоссе
 
                                     pathToEnd.getElements().add(new MoveTo(modelingParking.getDepartureI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25, modelingParking.getDepartureJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
@@ -672,6 +676,7 @@ public class ConstructorController {
             dialogStage.setScene(scene);
             statisticController = loader.getController();
             statisticController.setStage(dialogStage);
+            dialogStage.initOwner(stage);
             dialogStage.setX(stage.getX()+stage.getWidth());
             dialogStage.setY(stage.getY());
             dialogStage.setHeight(stage.getHeight());
