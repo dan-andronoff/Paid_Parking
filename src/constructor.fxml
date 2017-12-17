@@ -16,25 +16,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
    <children>
       <BorderPane fx:id="borderPane" layoutX="139.0" layoutY="70.0" prefHeight="681.0" prefWidth="957.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
+                <Menu mnemonicParsing="false" text="Файл">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Сохранить" />
+                        <MenuItem mnemonicParsing="false" text="Сохранить как" />
+                        <MenuItem mnemonicParsing="false" text="Загрузить" />
+                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
+                <Menu mnemonicParsing="false" text="Справка">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="parking.Parking's parameteres" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem mnemonicParsing="false" text="О системе" />
+                        <MenuItem mnemonicParsing="false" text="Об авторах" />
                   </items>
                 </Menu>
               </menus>
@@ -61,7 +59,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseRoad" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <ImageView fx:id="imageViewRoad" fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseRoad" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <GridPane.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
@@ -69,7 +67,7 @@
                                           <Image url="@road.jpg" />
                                        </image>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseParkingPlace" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                    <ImageView fx:id="imageViewParkingPlace" fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseParkingPlace" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                        <image>
                                           <Image url="@parking_place.png" />
                                        </image>
@@ -77,7 +75,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseEntry" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                    <ImageView fx:id="imageViewEntry" fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseEntry" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                        <image>
                                           <Image url="@entry.png" />
                                        </image>
@@ -85,7 +83,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseDeparture" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                    <ImageView fx:id="imageViewDeparture" fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseDeparture" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                                        <image>
                                           <Image url="@departure.png" />
                                        </image>
@@ -93,7 +91,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseCashBox" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                    <ImageView fx:id="imageViewCashBox" fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseCashBox" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                                        <image>
                                           <Image url="@cashBox.png" />
                                        </image>
@@ -101,7 +99,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseInfoTable" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
+                                    <ImageView fx:id="imageViewInfoTable" fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseInfoTable" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
                                        <image>
                                           <Image url="@infoTable.png" />
                                        </image>
@@ -109,7 +107,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                     </ImageView>
-                                    <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseLawn" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="6">
+                                    <ImageView fx:id="imageViewLawn" fitHeight="75.0" fitWidth="75.0" onMouseClicked="#onChooseLawn" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="6">
                                        <image>
                                           <Image url="@lawn.jpg" />
                                        </image>

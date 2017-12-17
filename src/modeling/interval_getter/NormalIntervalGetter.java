@@ -1,4 +1,7 @@
-package modeling;
+package modeling.interval_getter;
+
+import modeling.Distribution;
+import modeling.interval_getter.IntervalGetter;
 
 public class NormalIntervalGetter implements IntervalGetter {
     private double m;
@@ -25,5 +28,13 @@ public class NormalIntervalGetter implements IntervalGetter {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public double getM() {
+        return m;
+    }
+
+    public double getD() {
+        return d;
     }
 }

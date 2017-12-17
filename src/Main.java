@@ -19,7 +19,12 @@ public class Main extends Application { // JavaFX приложения насл�
         ((ConstructorController)loader.getController()).setStage(primaryStage);
         // создаем сцену с заданными шириной и высотой и содержащую наш корневым контейнером, и связываем ее с окном
         primaryStage.setScene(new Scene(root, 900, 700));
-        primaryStage.show(); // запускаем окно
+        primaryStage.show();
+        primaryStage.setMaxHeight(primaryStage.getHeight());
+        primaryStage.setMaxWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
+        primaryStage.setMinWidth(primaryStage.getWidth());
+       // запускаем окно
     }
 
     // метод main в JavaFX приложениях не является обязательным

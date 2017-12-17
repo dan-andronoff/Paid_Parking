@@ -1,4 +1,4 @@
-package modeling;
+package modeling.interval_getter;
 
 public interface IntervalGetter extends Cloneable {
 

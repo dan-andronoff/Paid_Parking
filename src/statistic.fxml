@@ -7,25 +7,24 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StatisticController">
+<AnchorPane maxHeight="702.0" maxWidth="457.0" minHeight="702.0" minWidth="457.0" prefHeight="702.0" prefWidth="457.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StatisticController">
    <children>
-      <TableView fx:id="statistic" layoutX="151.0" layoutY="77.0" prefHeight="583.0" prefWidth="434.0" AnchorPane.bottomAnchor="119.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TableView fx:id="statistic" layoutX="151.0" layoutY="77.0" prefHeight="583.0" prefWidth="458.0" AnchorPane.bottomAnchor="119.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
           <TableColumn fx:id="number" prefWidth="32.0" text="№" />
-          <TableColumn fx:id="type" prefWidth="113.0" text="Тип автомобиля" />
-            <TableColumn fx:id="price" prefWidth="62.0" text="Сумма" />
-            <TableColumn fx:id="arrivalTime" prefWidth="113.0" text="Время заезда" />
-            <TableColumn fx:id="departureTime" prefWidth="113.0" text="Время отъезда" />
+          <TableColumn fx:id="type" prefWidth="133.0" text="Тип автомобиля" />
+            <TableColumn fx:id="price" prefWidth="55.0" text="Сумма" />
+            <TableColumn fx:id="arrivalTime" prefWidth="108.0" text="Время заезда" />
+            <TableColumn fx:id="departureTime" prefWidth="128.0" text="Время отъезда" />
         </columns>
       </TableView>
-      <Label layoutX="20.0" layoutY="592.0" prefHeight="32.0" prefWidth="114.0" text="Прибыль за время:" />
-      <TextField fx:id="fromTimeField" layoutX="183.0" layoutY="595.0" prefHeight="25.0" prefWidth="89.0" />
-      <Label layoutX="155.0" layoutY="592.0" prefHeight="32.0" prefWidth="18.0" text="от:" />
-      <TextField fx:id="toTimeField" layoutX="320.0" layoutY="595.0" prefHeight="25.0" prefWidth="89.0" />
-      <Label layoutX="291.0" layoutY="592.0" prefHeight="32.0" prefWidth="18.0" text="до:" />
-      <Label layoutX="20.0" layoutY="662.0" prefHeight="32.0" prefWidth="114.0" text="Общая прибыль:" />
-      <Label fx:id="profitFullLabel" layoutX="157.0" layoutY="661.0" prefHeight="32.0" prefWidth="255.0" />
-      <Button layoutX="20.0" layoutY="632.0" mnemonicParsing="false" onMouseClicked="#getTimeProfit" prefHeight="25.0" prefWidth="89.0" text="Вычислить" />
-      <Label fx:id="profitTimeLabel" layoutX="156.0" layoutY="629.0" prefHeight="32.0" prefWidth="255.0" />
+      <Label layoutX="32.0" layoutY="592.0" prefHeight="32.0" prefWidth="136.0" text="Прибыль за время:" />
+      <TextField fx:id="fromTimeField" layoutX="189.0" layoutY="595.0" prefHeight="31.0" prefWidth="102.0" />
+      <TextField fx:id="toTimeField" layoutX="335.0" layoutY="595.0" prefHeight="25.0" prefWidth="89.0" />
+      <Label layoutX="305.0" layoutY="595.0" prefHeight="32.0" prefWidth="17.0" text="—" />
+      <Label layoutX="32.0" layoutY="662.0" prefHeight="32.0" prefWidth="136.0" text="Общая прибыль:" />
+      <Label fx:id="profitFullLabel" layoutX="190.0" layoutY="661.0" prefHeight="32.0" prefWidth="234.0" />
+      <Button layoutX="32.0" layoutY="629.0" mnemonicParsing="false" onMouseClicked="#getTimeProfit" prefHeight="31.0" prefWidth="118.0" text="Вычислить" />
+      <Label fx:id="profitTimeLabel" layoutX="189.0" layoutY="628.0" prefHeight="32.0" prefWidth="234.0" />
    </children>
 </AnchorPane>

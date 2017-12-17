@@ -1,12 +1,12 @@
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import modeling.*;
+import modeling.interval_getter.*;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 
 public class ModelingCarSettingsController {
     @FXML
@@ -43,6 +43,9 @@ public class ModelingCarSettingsController {
     private Label rLabel;
     @FXML
     private Spinner<Double> rSpinner;
+    @FXML
+    private GridPane gridPane;
+    private  List<RowConstraints> list;
 
     private boolean isSubmitClicked = false;
     private Stage dialogStage;
@@ -63,6 +66,7 @@ public class ModelingCarSettingsController {
         mSpinner.valueProperty().addListener((ObservableValue<? extends Double> observable, Double oldValue, Double newValue) -> {
             ((SpinnerValueFactory.DoubleSpinnerValueFactory)dSpinner.getValueFactory()).setMax(newValue/3 - ((newValue/3)%0.1));
         });
+        list = gridPane.getRowConstraints();
     }
 
     @FXML
@@ -83,6 +87,13 @@ public class ModelingCarSettingsController {
                 lSpinner.setVisible(false);
                 rLabel.setVisible(false);
                 rSpinner.setVisible(false);
+                list.get(0).setPercentHeight(25);
+                list.get(1).setPercentHeight(25);
+                list.get(2).setPercentHeight(25);
+                list.get(3).setPercentHeight(0);
+                list.get(4).setPercentHeight(0);
+                list.get(5).setPercentHeight(25);
+                dialogStage.setHeight(dialogStage.getHeight()*2d/3);
                 break;
             case "Случайный":
                 distributionChoiceBox.getSelectionModel().selectFirst();
@@ -100,28 +111,16 @@ public class ModelingCarSettingsController {
                 lSpinner.setVisible(false);
                 rLabel.setVisible(false);
                 rSpinner.setVisible(false);
+                list = gridPane.getRowConstraints();
+                list.get(0).setPercentHeight(100d/6);
+                list.get(1).setPercentHeight(100d/6);
+                list.get(2).setPercentHeight(100d/6);
+                list.get(3).setPercentHeight(100d/6);
+                list.get(4).setPercentHeight(100d/6);
+                list.get(5).setPercentHeight(100d/6);
+                dialogStage.setHeight(dialogStage.getHeight()*3d/2);
                 break;
         }
-    }
-
-    public double getSelectedCarEnterProbability(){
-        return probability.getValue();
-    }
-
-    public IntervalGetter getIntervalGetter() {
-        return intervalGetter;
-    }
-
-    public void setDialogStage(Stage stage){
-        dialogStage = stage;
-    }
-
-    public void setProbability(double probability){
-        this.probability.getValueFactory().setValue(probability);
-    }
-
-    public boolean isSubmitClicked(){
-        return isSubmitClicked;
     }
 
     @FXML
@@ -138,6 +137,12 @@ public class ModelingCarSettingsController {
                 lSpinner.setVisible(false);
                 rLabel.setVisible(false);
                 rSpinner.setVisible(false);
+                list.get(0).setPercentHeight(100d/6);
+                list.get(1).setPercentHeight(100d/6);
+                list.get(2).setPercentHeight(100d/6);
+                list.get(3).setPercentHeight(100d/6);
+                list.get(4).setPercentHeight(100d/6);
+                list.get(5).setPercentHeight(100d/6);
                 break;
             case "Показательный":
                 mLabel.setVisible(false);
@@ -150,6 +155,12 @@ public class ModelingCarSettingsController {
                 lSpinner.setVisible(false);
                 rLabel.setVisible(false);
                 rSpinner.setVisible(false);
+                list.get(0).setPercentHeight(20);
+                list.get(1).setPercentHeight(20);
+                list.get(2).setPercentHeight(20);
+                list.get(3).setPercentHeight(20);
+                list.get(4).setPercentHeight(0);
+                list.get(5).setPercentHeight(20);
                 break;
             case "Равномерный":
                 mLabel.setVisible(false);
@@ -162,8 +173,30 @@ public class ModelingCarSettingsController {
                 lSpinner.setVisible(true);
                 rLabel.setVisible(true);
                 rSpinner.setVisible(true);
+                list.get(0).setPercentHeight(100d/6);
+                list.get(1).setPercentHeight(100d/6);
+                list.get(2).setPercentHeight(100d/6);
+                list.get(3).setPercentHeight(100d/6);
+                list.get(4).setPercentHeight(100d/6);
+                list.get(5).setPercentHeight(100d/6);
                 break;
         }
+    }
+
+    public double getSelectedCarEnterProbability(){
+        return probability.getValue();
+    }
+
+    public IntervalGetter getIntervalGetter() {
+        return intervalGetter;
+    }
+
+    public void setDialogStage(Stage stage){
+        dialogStage = stage;
+    }
+
+    public boolean isSubmitClicked(){
+        return isSubmitClicked;
     }
 
     @FXML
@@ -188,5 +221,9 @@ public class ModelingCarSettingsController {
         }
         isSubmitClicked = true;
         dialogStage.close();
+    }
+
+    public void showAndWait(){
+        dialogStage.showAndWait();
     }
 }

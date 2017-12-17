@@ -1,4 +1,7 @@
-package modeling;
+package modeling.interval_getter;
+
+import modeling.Distribution;
+import modeling.interval_getter.IntervalGetter;
 
 public class UniformIntervalGetter implements IntervalGetter {
     private double l;
@@ -25,5 +28,13 @@ public class UniformIntervalGetter implements IntervalGetter {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public double getL() {
+        return l;
+    }
+
+    public double getR() {
+        return r;
     }
 }

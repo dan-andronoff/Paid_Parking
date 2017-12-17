@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -21,6 +23,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import modeling.*;
+import modeling.car.Car;
+import modeling.car.Cargo;
+import modeling.car.Passenger;
+import modeling.interval_getter.DeterminateIntervalGetter;
+import modeling.interval_getter.IntervalGetter;
 import parking.Parking;
 import parking.Verificator;
 import parking.VerificatorError;
@@ -30,7 +37,6 @@ import parking.template.Template;
 import java.io.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class ConstructorController {
@@ -40,6 +46,8 @@ public class ConstructorController {
     TabPane tabPane;
     private Stage stage;
     private int size;
+    private File initialFile;
+    private File initialDirectory = new File("..");
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -47,6 +55,13 @@ public class ConstructorController {
 
     @FXML
     public void initialize() {
+        selectedEffect = new InnerShadow();
+        selectedEffect.setColor(Color.web("#d88913a6"));
+        selectedEffect.setChoke(0.0);
+        selectedEffect.setBlurType(BlurType.GAUSSIAN);
+        selectedEffect.setWidth(255.0);
+        selectedEffect.setHeight(255.0);
+
         //Инициализация вкладки конструирования
         template = Template.Null;
         size = 50;
@@ -79,9 +94,25 @@ public class ConstructorController {
     //Параметры для constructor
     private Template template;
     private Parking constructorParking;
+    private InnerShadow selectedEffect;
     @FXML
     private Pane constructor;
     private GraphicsContext graphicsContextConstructor;
+
+    @FXML
+    private ImageView imageViewRoad;
+    @FXML
+    private ImageView imageViewParkingPlace;
+    @FXML
+    private ImageView imageViewEntry;
+    @FXML
+    private ImageView imageViewDeparture;
+    @FXML
+    private ImageView imageViewCashBox;
+    @FXML
+    private ImageView imageViewInfoTable;
+    @FXML
+    private ImageView imageViewLawn;
 
     private void clearConstructorContext() {
         graphicsContextConstructor.clearRect(0, 0, graphicsContextConstructor.getCanvas().getWidth(), graphicsContextConstructor.getCanvas().getHeight());
@@ -90,8 +121,7 @@ public class ConstructorController {
     //Параметры для modeling
     private Parking modelingParking;
     private double probability = 1;
-    private double cargoRate = 300;
-    private double passengerRate = 200;
+    private double passengerPercent = 1;
     private IntervalGetter intervalGetter = new DeterminateIntervalGetter(1);
     private IntervalGetter reverseIntervalGetter = new DeterminateIntervalGetter(1);
     private IntervalGetter intervalGetterParking = new DeterminateIntervalGetter(1);
@@ -116,6 +146,8 @@ public class ConstructorController {
 
     private GraphicsContext graphicsContextModeling;
     private StatisticController statisticController;
+    private ModelingCarSettingsController modelingCarSettingsController;
+    private ModelingParkingSettingsController modelingParkingSettingsController;
 
     private void clearModelingContext() {
         graphicsContextModeling.clearRect(0, 0, graphicsContextModeling.getCanvas().getWidth(), graphicsContextModeling.getCanvas().getHeight());
@@ -128,36 +160,85 @@ public class ConstructorController {
     @FXML
     public void onChooseCashBox() {
         template = Template.CashBox;
+        imageViewCashBox.setEffect(selectedEffect);
+        imageViewRoad.setEffect(null);
+        imageViewEntry.setEffect(null);
+        imageViewDeparture.setEffect(null);
+        imageViewInfoTable.setEffect(null);
+        imageViewParkingPlace.setEffect(null);
+        imageViewLawn.setEffect(null);
     }
 
     @FXML
     public void onChooseInfoTable() {
         template = Template.InfoTable;
+        imageViewCashBox.setEffect(null);
+        imageViewRoad.setEffect(null);
+        imageViewEntry.setEffect(null);
+        imageViewDeparture.setEffect(null);
+        imageViewInfoTable.setEffect(selectedEffect);
+        imageViewParkingPlace.setEffect(null);
+        imageViewLawn.setEffect(null);
     }
 
     @FXML
     public void onChooseDeparture() {
         template = Template.Departure;
+        imageViewCashBox.setEffect(null);
+        imageViewRoad.setEffect(null);
+        imageViewEntry.setEffect(null);
+        imageViewDeparture.setEffect(selectedEffect);
+        imageViewInfoTable.setEffect(null);
+        imageViewParkingPlace.setEffect(null);
+        imageViewLawn.setEffect(null);
     }
 
     @FXML
     public void onChooseEntry() {
         template = Template.Entry;
+        imageViewCashBox.setEffect(null);
+        imageViewRoad.setEffect(null);
+        imageViewEntry.setEffect(selectedEffect);
+        imageViewDeparture.setEffect(null);
+        imageViewInfoTable.setEffect(null);
+        imageViewParkingPlace.setEffect(null);
+        imageViewLawn.setEffect(null);
     }
 
     @FXML
     public void onChooseParkingPlace() {
         template = Template.ParkingPlace;
+        imageViewCashBox.setEffect(null);
+        imageViewRoad.setEffect(null);
+        imageViewEntry.setEffect(null);
+        imageViewDeparture.setEffect(null);
+        imageViewInfoTable.setEffect(null);
+        imageViewParkingPlace.setEffect(selectedEffect);
+        imageViewLawn.setEffect(null);
     }
 
     @FXML
     public void onChooseLawn() {
         template = Template.Lawn;
+        imageViewCashBox.setEffect(null);
+        imageViewRoad.setEffect(null);
+        imageViewEntry.setEffect(null);
+        imageViewDeparture.setEffect(null);
+        imageViewInfoTable.setEffect(null);
+        imageViewParkingPlace.setEffect(null);
+        imageViewLawn.setEffect(selectedEffect);
     }
 
     @FXML
     public void onChooseRoad() {
         template = Template.Road;
+        imageViewCashBox.setEffect(null);
+        imageViewRoad.setEffect(selectedEffect);
+        imageViewEntry.setEffect(null);
+        imageViewDeparture.setEffect(null);
+        imageViewInfoTable.setEffect(null);
+        imageViewParkingPlace.setEffect(null);
+        imageViewLawn.setEffect(null);
     }
 
     @FXML
@@ -180,6 +261,7 @@ public class ConstructorController {
             controller.setDialogStage(dialogStage);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(stage);
+            dialogStage.setResizable(false);
             // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
             dialogStage.showAndWait();
 
@@ -199,13 +281,15 @@ public class ConstructorController {
     @FXML
     public void onConstructorLoad() {
         FileChooser fileChooser = new FileChooser();
+        if (initialDirectory.exists()){
+            fileChooser.setInitialDirectory(initialDirectory);
+        }
         fileChooser.setTitle("Загрузка топологии:");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Файл топологии парковки", "*.top"));
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             try (FileInputStream in = new FileInputStream(file.getPath())) {
                 ObjectInputStream objectInputStream = new ObjectInputStream(in);
-                constructorParking.drawBackground();
                 constructorParking = (Parking) objectInputStream.readObject();
                 constructorParking.setGraphicsContext(graphicsContextConstructor);
                 for (int i = 0; i < constructorParking.getFunctionalBlockH(); i++) {
@@ -220,12 +304,29 @@ public class ConstructorController {
                 constructorParking.drawHighway();
                 constructorParking.drawMarkup();
                 constructorParking.drawFunctionalBlocks();
-            } catch (FileNotFoundException e) {
+
+                initialDirectory = new File(file.getParent());
+            } catch (InvalidClassException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("");
+                alert.setHeaderText("");
+                alert.setContentText("Загружаемая версия топологии некорректна!");
+                alert.showAndWait();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("");
+                alert.setHeaderText("");
+                alert.setContentText("Отсутствует класс топологии!");
+                alert.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("");
+                alert.setHeaderText("");
+                alert.setContentText("Загружаемый файл не содержит топологии парковки!");
+                alert.showAndWait();
             }
         }
     }
@@ -233,13 +334,21 @@ public class ConstructorController {
     @FXML
     public void onSave() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Сохранение топологию:");
+        if (initialDirectory.exists()){
+            fileChooser.setInitialDirectory(initialDirectory);
+            if (initialFile!=null&&initialFile.exists()){
+                fileChooser.setInitialFileName(initialFile.getName());
+            }
+        }
+        fileChooser.setTitle("Сохранение топологии:");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Файл топологии парковки", "*.top"));
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
             try (FileOutputStream out = new FileOutputStream(file.getPath())) {
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
                 objectOutputStream.writeObject(constructorParking);
+                initialFile = file;
+                initialDirectory = new File(file.getParent());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -321,47 +430,67 @@ public class ConstructorController {
     @FXML
     public void onModelingLoad() {
         FileChooser fileChooser = new FileChooser();
+        if (initialDirectory.exists()){
+            fileChooser.setInitialDirectory(initialDirectory);
+        }
         fileChooser.setTitle("Загрузка топологии:");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Файл топологии парковки", "*.top"));
         File file = fileChooser.showOpenDialog(stage);
+        Parking loadingParking;
         if (file != null) {
             try (FileInputStream in = new FileInputStream(file.getPath())) {
                 ObjectInputStream objectInputStream = new ObjectInputStream(in);
                 Parking parking = (Parking) objectInputStream.readObject();
-                modelingParking = new Parking(parking.getFunctionalBlockH(), parking.getFunctionalBlockV(), graphicsContextModeling, size, parking);
-                for (int i = 0; i < modelingParking.getFunctionalBlockH(); i++) {
-                    for (int j = 0; j < modelingParking.getFunctionalBlockV(); j++) {
-                        if (modelingParking.getFunctionalBlock(i, j) != null) {
-                            modelingParking.getFunctionalBlock(i, j).setGraphicsContext(graphicsContextModeling);
+                loadingParking = new Parking(parking.getFunctionalBlockH(), parking.getFunctionalBlockV(), graphicsContextModeling, size, parking);
+                for (int i = 0; i <  loadingParking.getFunctionalBlockH(); i++) {
+                    for (int j = 0; j <  loadingParking.getFunctionalBlockV(); j++) {
+                        if ( loadingParking.getFunctionalBlock(i, j) != null) {
+                            loadingParking.getFunctionalBlock(i, j).setGraphicsContext(graphicsContextModeling);
                         }
                     }
                 }
+                String message = getErrorMessage(loadingParking);
+                if (message == null) {
+                    modelingParking = loadingParking;
+                    clearModelingContext();
+                    modelingParking.drawBackground();
+                    modelingParking.drawHighwayInModeling();
+                    modelingParking.drawFunctionalBlocksInModeling();
+                    run_button.setDisable(false);
+                    run_button.setImage(new Image("play_icon.png"));
+                    pause_button.setDisable(true);
+                    pause_button.setImage(new Image("pause_icon_disabled.png"));
+                    stop_button.setDisable(true);
+                    stop_button.setImage(new Image("stop_icon_disabled.png"));
 
-            } catch (FileNotFoundException e) {
+                    initialDirectory = new File(file.getParent());
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("");
+                    alert.setHeaderText("");
+                    alert.setContentText("Топология сконструирована неверно, попробуйте изменить топологию в конструировании.");
+                    alert.showAndWait();
+                }
+            } catch (InvalidClassException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            String message = getErrorMessage(modelingParking);
-            if (message == null) {
-                clearModelingContext();
-                modelingParking.drawBackground();
-                modelingParking.drawHighwayInModeling();
-                modelingParking.drawFunctionalBlocksInModeling();
-                run_button.setDisable(false);
-                run_button.setImage(new Image("play_icon.png"));
-                pause_button.setDisable(true);
-                pause_button.setImage(new Image("pause_icon_disabled.png"));
-                stop_button.setDisable(true);
-                stop_button.setImage(new Image("stop_icon_disabled.png"));
-
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("");
                 alert.setHeaderText("");
-                alert.setContentText("Топология сконструирована неверно, попробуйте изменить топологию в конструировании.");
+                alert.setContentText("Загружаемая версия топологии некорректна!");
+                alert.showAndWait();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("");
+                alert.setHeaderText("");
+                alert.setContentText("Отсутствует класс топологии!");
+                alert.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("");
+                alert.setHeaderText("");
+                alert.setContentText("Загружаемый файл не содержит топологии парковки!");
                 alert.showAndWait();
             }
         }
@@ -403,7 +532,6 @@ public class ConstructorController {
 
             if (now-lastTimeTick>1_000_000_000L){
                 modelTime.inc();
-                System.out.println(modelTime);
                 lastTimeTick=now;
                 modelTimeCanvas.getGraphicsContext2D().clearRect(0,0,100,50);
                 modelTimeCanvas.getGraphicsContext2D().setFill(Color.BLACK);
@@ -411,7 +539,10 @@ public class ConstructorController {
                 modelTimeCanvas.getGraphicsContext2D().fillText(modelTime.toString(),15,35);
             }
             if (now - lastHighwayReverse > reverseIntervalGetter.getInterval() * 1_000_000_000L) {
-                Car car = new Car(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
+                Car car;
+                if (random.nextDouble()<passengerPercent)
+                    car = new Passenger(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
+                else  car = new Cargo(graphicsContextModeling.getCanvas().getWidth() + 50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 75);
                 cars.add(car);
                 modeling.getChildren().add(car);
 
@@ -434,16 +565,15 @@ public class ConstructorController {
                     transitions.remove(pathTransition1);
                 }));
                 pathTransition.play();
-                //
                 transitions.add(pathTransition);
-                //
-                System.out.println(cars.size());
-                System.out.println(modeling.getChildren().size());
                 reverseIntervalGetter.generateNext();
                 lastHighwayReverse = now;
             }
             if (now - lastHighway > intervalGetter.getInterval() * 1_000_000_000L) {
-                Car car = new Car(-50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25);
+                Car car;
+                if (random.nextDouble()<passengerPercent)
+                 car = new Passenger(-50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25);
+                else car = new Cargo(-50, modelingParking.getVERTICAL_MARGIN() + modelingParking.getFunctionalBlockV() * size + 25);
                 cars.add(car);
                 modeling.getChildren().add(car);
 
@@ -547,7 +677,7 @@ public class ConstructorController {
                                     transitions.remove(turn);
                                     transitions.add(pathTransitionToEnd);
                                     Path pathToEnd = new Path();
-                                    statisticController.addRecord(new Record(((ParkingPlace)modelingParking.getParking()[car1.getParkingPlace().getI()][car1.getParkingPlace().getJ()]).getNumber(), "Легковой", passengerRate * parkingTime/60,  car1.getArrivalTime(), car1.getDepartureTime()));
+                                    statisticController.addRecord(new Record(((ParkingPlace)modelingParking.getParking()[car1.getParkingPlace().getI()][car1.getParkingPlace().getJ()]).getNumber(), car1.getType(), car1.getRate() * parkingTime/60,  car1.getArrivalTime(), car1.getDepartureTime()));
                                     //Поворот на шоссе
 
                                     pathToEnd.getElements().add(new MoveTo(modelingParking.getDepartureI() * size + modelingParking.getHORIZONTAL_MARGIN() + 25, modelingParking.getDepartureJ() * size + modelingParking.getVERTICAL_MARGIN() + 25));
@@ -620,7 +750,6 @@ public class ConstructorController {
                 pathTransition.play();
                 intervalGetter.generateNext();
                 lastHighway = now;
-                System.out.println(transitions.size());
             }
         }
 
@@ -688,8 +817,13 @@ public class ConstructorController {
             dialogStage.setX(stage.getX()+stage.getWidth());
             dialogStage.setY(stage.getY());
             dialogStage.setHeight(stage.getHeight());
+
             // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
             dialogStage.show();
+            dialogStage.setMaxHeight(dialogStage.getHeight());
+            dialogStage.setMaxWidth(dialogStage.getWidth());
+            dialogStage.setMinHeight(dialogStage.getHeight());
+            dialogStage.setMinWidth(dialogStage.getWidth());
         }
         else modelingTimer.resumeAnimation();
         pause_button.setDisable(false);
@@ -733,29 +867,33 @@ public class ConstructorController {
     @FXML
     public void onModelingCarSettingsClick() {
         try {
-            // Загружаем fxml-файл и создаём новую сцену
-            // для всплывающего диалогового окна.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("modeling_car_settings.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
-            // Создаём диалоговое окно Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Параметры потока автомобилей");
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-            // Передаём адресата в контроллер.
-            ModelingCarSettingsController controller = loader.getController();
-            //controller.setInitialWidth(constructorParking.getFunctionalBlockH());
-            //controller.setInitialHeight(constructorParking.getFunctionalBlockV());
-            controller.setProbability(probability);
-            controller.setDialogStage(dialogStage);
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(stage);
-            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
-            dialogStage.showAndWait();
-            if (controller.isSubmitClicked()) {
-                probability = controller.getSelectedCarEnterProbability();
-                intervalGetter = controller.getIntervalGetter();
+            if (modelingCarSettingsController==null) {
+                // Загружаем fxml-файл и создаём новую сцену
+                // для всплывающего диалогового окна.
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("modeling_car_settings.fxml"));
+                AnchorPane page = (AnchorPane) loader.load();
+                // Создаём диалоговое окно Stage.
+                Stage dialogStage = new Stage();
+                dialogStage.setTitle("Параметры потока автомобилей");
+                Scene scene = new Scene(page);
+                dialogStage.setScene(scene);
+                // Передаём адресата в контроллер.
+                ModelingCarSettingsController controller = loader.getController();
+                //controller.setInitialWidth(constructorParking.getFunctionalBlockH());
+                //controller.setInitialHeight(constructorParking.getFunctionalBlockV());
+                controller.setDialogStage(dialogStage);
+                dialogStage.initModality(Modality.WINDOW_MODAL);
+                dialogStage.initOwner(stage);
+                // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+
+                dialogStage.setResizable(false);
+                modelingCarSettingsController = controller;
+            }
+            modelingCarSettingsController.showAndWait();
+            if (modelingCarSettingsController.isSubmitClicked()) {
+                probability = modelingCarSettingsController.getSelectedCarEnterProbability();
+                intervalGetter = modelingCarSettingsController.getIntervalGetter();
                 try {
                     reverseIntervalGetter = (IntervalGetter) intervalGetter.clone();
                 } catch (CloneNotSupportedException e) {
@@ -768,34 +906,37 @@ public class ConstructorController {
     }
 
     @FXML
-    public void onModelingParkingSettingsClick(){
+    public void onModelingParkingSettingsClick() {
         try {
-            // Загружаем fxml-файл и создаём новую сцену
-            // для всплывающего диалогового окна.
+            if (modelingParkingSettingsController == null) {
+                // Загружаем fxml-файл и создаём новую сцену
+                // для всплывающего диалогового окна.
+                FXMLLoader loader = new FXMLLoader();
 
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("modeling_parking_settings.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
-            // Создаём диалоговое окно Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Параметры парковки");
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-            // Передаём адресата в контроллер.
-            ModelingParkingSettingsController controller = loader.getController();
-            //controller.setInitialWidth(constructorParking.getFunctionalBlockH());
-            //controller.setInitialHeight(constructorParking.getFunctionalBlockV());
-            controller.setCargoRate(cargoRate);
-            controller.setPassengerRate(passengerRate);
-            controller.setDialogStage(dialogStage);
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(stage);
-            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
-            dialogStage.showAndWait();
-            if (controller.isSubmitClicked()){
-                cargoRate = controller.getCargoRate();
-                passengerRate = controller.getPassengerRate();
-                intervalGetterParking = controller.getIntervalGetter();
+                loader.setLocation(getClass().getResource("modeling_parking_settings.fxml"));
+                AnchorPane page = (AnchorPane) loader.load();
+                // Создаём диалоговое окно Stage.
+                Stage dialogStage = new Stage();
+                dialogStage.setTitle("Параметры парковки");
+                Scene scene = new Scene(page);
+                dialogStage.setScene(scene);
+                // Передаём адресата в контроллер.
+                ModelingParkingSettingsController controller = loader.getController();
+                //controller.setInitialWidth(constructorParking.getFunctionalBlockH());
+                //controller.setInitialHeight(constructorParking.getFunctionalBlockV());
+                controller.setDialogStage(dialogStage);
+                dialogStage.initModality(Modality.WINDOW_MODAL);
+                dialogStage.initOwner(stage);
+                dialogStage.setResizable(false);
+                // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+                modelingParkingSettingsController=controller;
+            }
+            modelingParkingSettingsController.showAndWait();
+            if (modelingParkingSettingsController.isSubmitClicked()) {
+                Cargo.setRate(modelingParkingSettingsController.getCargoRate());
+                Passenger.setRate(modelingParkingSettingsController.getPassengerRate());
+                passengerPercent = modelingParkingSettingsController.getPassengerPercent();
+                intervalGetterParking = modelingParkingSettingsController.getIntervalGetter();
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,4 +1,6 @@
-package modeling;
+package modeling.interval_getter;
+
+import modeling.interval_getter.IntervalGetter;
 
 public class DeterminateIntervalGetter implements IntervalGetter {
 

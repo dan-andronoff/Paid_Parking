@@ -4,14 +4,22 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import modeling.*;
+import modeling.interval_getter.*;
+
+import java.util.List;
 
 public class ModelingParkingSettingsController {
     @FXML
     private Spinner<Double> cargoRate;
     @FXML
     private Spinner<Double> passengerRate;
+    @FXML
+    private Spinner<Double> passengerPercent;
+    @FXML
+    private Spinner<Double> cargoPercent;
     @FXML
     private ComboBox<String> type;
 
@@ -44,6 +52,9 @@ public class ModelingParkingSettingsController {
     private Label rLabel;
     @FXML
     private Spinner<Double> rSpinner;
+    @FXML
+    private GridPane gridPane;
+    private List<RowConstraints> list;
 
     private boolean isSubmitClicked = false;
     private Stage dialogStage;
@@ -63,6 +74,13 @@ public class ModelingParkingSettingsController {
         mSpinner.valueProperty().addListener((ObservableValue<? extends Double> observable, Double oldValue, Double newValue) -> {
             ((SpinnerValueFactory.DoubleSpinnerValueFactory)dSpinner.getValueFactory()).setMax(newValue/3 - ((newValue/3)%0.1));
         });
+        passengerPercent.valueProperty().addListener((ObservableValue<? extends Double> observable, Double oldValue, Double newValue) -> {
+            cargoPercent.getValueFactory().setValue(1-newValue);
+        });
+        cargoPercent.valueProperty().addListener((ObservableValue<? extends Double> observable, Double oldValue, Double newValue) -> {
+            passengerPercent.getValueFactory().setValue(1-newValue);
+        });
+        list = gridPane.getRowConstraints();
     }
 
     public double getCargoRate(){
@@ -78,13 +96,6 @@ public class ModelingParkingSettingsController {
 
     public void setDialogStage(Stage stage){
         dialogStage = stage;
-    }
-
-    public void setCargoRate(double cargoRate){
-        this.cargoRate.getValueFactory().setValue(cargoRate);
-    }
-    public void setPassengerRate(double passengerRate){
-        this.passengerRate.getValueFactory().setValue(passengerRate);
     }
 
     public boolean isSubmitClicked(){
@@ -109,6 +120,14 @@ public class ModelingParkingSettingsController {
                 lSpinner.setVisible(false);
                 rLabel.setVisible(false);
                 rSpinner.setVisible(false);
+                list.get(0).setPercentHeight(28);
+                list.get(1).setPercentHeight(28);
+                list.get(2).setPercentHeight(15);
+                list.get(3).setPercentHeight(15);
+                list.get(4).setPercentHeight(0);
+                list.get(5).setPercentHeight(0);
+                list.get(6).setPercentHeight(14);
+                dialogStage.setHeight(dialogStage.getHeight()*7d/9);
                 break;
             case "Случайный":
                 distributionChoiceBox.getSelectionModel().selectFirst();
@@ -126,6 +145,14 @@ public class ModelingParkingSettingsController {
                 lSpinner.setVisible(false);
                 rLabel.setVisible(false);
                 rSpinner.setVisible(false);
+                list.get(0).setPercentHeight(200d/9);
+                list.get(1).setPercentHeight(200d/9);
+                list.get(2).setPercentHeight(100d/9);
+                list.get(3).setPercentHeight(100d/9);
+                list.get(4).setPercentHeight(100d/9);
+                list.get(5).setPercentHeight(100d/9);
+                list.get(6).setPercentHeight(100d/9);
+                dialogStage.setHeight(dialogStage.getHeight()*9d/7);
                 break;
         }
     }
@@ -144,6 +171,13 @@ public class ModelingParkingSettingsController {
                 lSpinner.setVisible(false);
                 rLabel.setVisible(false);
                 rSpinner.setVisible(false);
+                list.get(0).setPercentHeight(200d/9);
+                list.get(1).setPercentHeight(200d/9);
+                list.get(2).setPercentHeight(100d/9);
+                list.get(3).setPercentHeight(100d/9);
+                list.get(4).setPercentHeight(100d/9);
+                list.get(5).setPercentHeight(100d/9);
+                list.get(6).setPercentHeight(100d/9);
                 break;
             case "Показательный":
                 mLabel.setVisible(false);
@@ -156,6 +190,13 @@ public class ModelingParkingSettingsController {
                 lSpinner.setVisible(false);
                 rLabel.setVisible(false);
                 rSpinner.setVisible(false);
+                list.get(0).setPercentHeight(200d/8);
+                list.get(1).setPercentHeight(200d/8);
+                list.get(2).setPercentHeight(100d/8);
+                list.get(3).setPercentHeight(100d/8);
+                list.get(4).setPercentHeight(100d/8);
+                list.get(5).setPercentHeight(0);
+                list.get(6).setPercentHeight(100d/8);
                 break;
             case "Равномерный":
                 mLabel.setVisible(false);
@@ -168,6 +209,13 @@ public class ModelingParkingSettingsController {
                 lSpinner.setVisible(true);
                 rLabel.setVisible(true);
                 rSpinner.setVisible(true);
+                list.get(0).setPercentHeight(200d/9);
+                list.get(1).setPercentHeight(200d/9);
+                list.get(2).setPercentHeight(100d/9);
+                list.get(3).setPercentHeight(100d/9);
+                list.get(4).setPercentHeight(100d/9);
+                list.get(5).setPercentHeight(100d/9);
+                list.get(6).setPercentHeight(100d/9);
                 break;
         }
     }
@@ -194,5 +242,13 @@ public class ModelingParkingSettingsController {
         }
         isSubmitClicked = true;
         dialogStage.close();
+    }
+
+    public void showAndWait() {
+        dialogStage.showAndWait();
+    }
+
+    public double getPassengerPercent() {
+        return passengerPercent.getValue();
     }
 }

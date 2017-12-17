@@ -2,9 +2,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import modeling.Car;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 

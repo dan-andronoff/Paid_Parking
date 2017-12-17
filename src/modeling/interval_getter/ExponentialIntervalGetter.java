@@ -1,4 +1,7 @@
-package modeling;
+package modeling.interval_getter;
+
+import modeling.Distribution;
+import modeling.interval_getter.IntervalGetter;
 
 public class ExponentialIntervalGetter implements IntervalGetter {
     private double i;
@@ -23,5 +26,9 @@ public class ExponentialIntervalGetter implements IntervalGetter {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public double getI() {
+        return i;
     }
 }
