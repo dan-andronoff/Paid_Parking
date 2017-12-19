@@ -22,11 +22,12 @@
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
-                <Menu mnemonicParsing="false" text="Файл">
+                <Menu fx:id="fileMenu" mnemonicParsing="false" onShowing="#checkFileMenu" text="Файл">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Сохранить" />
-                        <MenuItem mnemonicParsing="false" text="Сохранить как" />
-                        <MenuItem mnemonicParsing="false" text="Загрузить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuSave" text="Сохранить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onSave" text="Сохранить как" />
+                        <MenuItem mnemonicParsing="false" onAction="#onConstructorLoad" text="Загрузить" />
+                        <MenuItem mnemonicParsing="false" onAction="#onModelingLoad" text="Загрузить" />
                      </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Справка">
@@ -41,7 +42,7 @@
          <center>
             <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
-                <Tab text="Конструирование">
+                <Tab onSelectionChanged="#showConstructorMenuItems" text="Конструирование">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <left>
@@ -175,7 +176,7 @@
                         </BorderPane>
                      </content>
                   </Tab>
-                <Tab text="Моделирование">
+                <Tab onSelectionChanged="#showModelingMenuItems" text="Моделирование">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>

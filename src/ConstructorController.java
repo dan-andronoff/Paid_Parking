@@ -48,6 +48,46 @@ public class ConstructorController {
     private int size;
     private File initialFile;
     private File initialDirectory = new File("..");
+    @FXML
+    private Menu fileMenu;
+
+    @FXML
+    public void showModelingMenuItems(){
+        fileMenu.getItems().get(0).setVisible(false);
+        fileMenu.getItems().get(1).setVisible(false);
+        fileMenu.getItems().get(2).setVisible(false);
+        fileMenu.getItems().get(3).setVisible(true);
+    }
+
+    @FXML
+    public void showConstructorMenuItems(){
+        fileMenu.getItems().get(0).setVisible(true);
+        fileMenu.getItems().get(1).setVisible(true);
+        fileMenu.getItems().get(2).setVisible(true);
+        fileMenu.getItems().get(3).setVisible(false);
+    }
+
+    @FXML
+    public void onMenuSave(){
+        try (FileOutputStream out = new FileOutputStream(initialFile.getPath())) {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+            objectOutputStream.writeObject(constructorParking);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("");
+            alert.setHeaderText("");
+            alert.setContentText("Ошибка при сохранении топологии в файл " + initialFile.getPath() + ". Убедитесь, что файл существует и доступен для записи!");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    public void checkFileMenu(){
+        if (initialFile!=null&&initialFile.exists()&&initialFile.isFile()&&initialFile.canWrite())
+            fileMenu.getItems().get(0).setDisable(false);
+        else fileMenu.getItems().get(0).setDisable(true);
+    }
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -305,6 +345,7 @@ public class ConstructorController {
                 constructorParking.drawMarkup();
                 constructorParking.drawFunctionalBlocks();
 
+                initialFile = file;
                 initialDirectory = new File(file.getParent());
             } catch (InvalidClassException e) {
                 e.printStackTrace();
