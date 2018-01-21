@@ -8,7 +8,7 @@ import javafx.scene.text.Font;
 import parking.template.*;
 
 import java.io.Serializable;
-
+//Класс парковка
 public class Parking implements Serializable {
 
     private FunctionalBlock[][] parking;
@@ -78,6 +78,7 @@ public class Parking implements Serializable {
         return functionalBlockV;
     }
 
+    //Конструктор парковки
     public Parking(int functionalBlockH, int functionalBlockV, GraphicsContext graphicsContext, int size) {
         parking = new FunctionalBlock[functionalBlockH][functionalBlockV];
         this.graphicsContext = graphicsContext;
@@ -132,6 +133,7 @@ public class Parking implements Serializable {
         return parking[i][j];
     }
 
+    //Отрисовка разметки
     public void drawMarkup() {
         for (int i = 0; i <= functionalBlockH; i++) {
             graphicsContext.strokeLine(
@@ -146,6 +148,7 @@ public class Parking implements Serializable {
         }
     }
 
+    //Отрисовка функционального блока
     public void drawFunctionalBlock(double x, double y) {
         int i = ((int) (x - HORIZONTAL_MARGIN)) / size;
         int j = ((int) (y - VERTICAL_MARGIN)) / size;
@@ -154,6 +157,7 @@ public class Parking implements Serializable {
     }
 
 
+    //Создание функционального блока
     public void createFunctionalBlock(double x, double y, Template template) {
         int i = ((int) (x - HORIZONTAL_MARGIN)) / size;
         int j = ((int) (y - VERTICAL_MARGIN)) / size;
@@ -239,6 +243,7 @@ public class Parking implements Serializable {
                 }
     }
 
+    //Отрисовка шоссе
     public void drawHighway() {
         String imagePath = "highway_road.jpg";
         Image image = new Image(imagePath);
@@ -274,6 +279,7 @@ public class Parking implements Serializable {
         ((InfoTable)parking[infoTableI][infoTableJ]).renderInModeling(HORIZONTAL_MARGIN+infoTableI*size,VERTICAL_MARGIN+ infoTableJ*size, size, count);
     }
 
+    //Отрисовка фона
     public void drawBackground(){
         String imagePath = "tree.png";
         Image image = new Image(imagePath);
@@ -305,6 +311,7 @@ public class Parking implements Serializable {
         }
     }
 
+    //Отрисовка номеров парковочных мест
     public void drawParkingNumbers(){
         for (int j=0, number=1; j<functionalBlockV; j++)
             for (int i=0; i<functionalBlockH; i++){

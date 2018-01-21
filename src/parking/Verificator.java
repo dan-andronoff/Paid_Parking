@@ -5,7 +5,7 @@ import graph.Node;
 import parking.template.*;
 
 import java.util.ArrayList;
-
+// Класс для проверки
 public class Verificator {
 
     public static ArrayList<VerificatorError> checkAll(Parking parking) {

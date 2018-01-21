@@ -3,7 +3,7 @@ package graph;
 import parking.template.Template;
 
 import java.util.ArrayList;
-
+//Класс вершины
 public class Node {
     private Template type;
     private int i;

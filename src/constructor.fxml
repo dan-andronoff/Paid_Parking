@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="1084.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConstructorController">
    <children>
       <BorderPane fx:id="borderPane" layoutX="139.0" layoutY="70.0" prefHeight="681.0" prefWidth="957.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -33,7 +33,7 @@
                 <Menu mnemonicParsing="false" text="Справка">
                   <items>
                     <MenuItem mnemonicParsing="false" text="О системе" />
-                        <MenuItem mnemonicParsing="false" text="Об авторах" />
+                        <MenuItem mnemonicParsing="false" onAction="#onAuthorsClick" text="Об авторах" />
                   </items>
                 </Menu>
               </menus>

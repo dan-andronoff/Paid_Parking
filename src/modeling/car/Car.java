@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
-
+//Класс машина
 public abstract class Car extends ImageView {
 
     private String arrivalTime;

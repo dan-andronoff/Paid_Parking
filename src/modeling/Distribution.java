@@ -3,7 +3,7 @@ package modeling;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
-
+//Класс для создания распределения
 public class Distribution {
     private static Random random = new Random();
 
