@@ -306,6 +306,30 @@ public class ConstructorController {
     }
 
     @FXML
+    public void onProjectClick(){
+        try {
+            // Загружаем fxml-файл и создаём новую сцену
+            // для всплывающего диалогового окна.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("about_project.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            // Создаём диалоговое окно Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("О системе");
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            // Передаём адресата в контроллер.
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(stage);
+            dialogStage.setResizable(false);
+            // Отображаем диалоговое окно и ждём, пока пользователь его не закроет
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void onConstructorSettingsClick() {
         try {
             // Загружаем fxml-файл и создаём новую сцену
