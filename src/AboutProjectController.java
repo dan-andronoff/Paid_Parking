@@ -6,20 +6,16 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AboutProjectController{
+public class AboutProjectController {
     @FXML
     WebView webViewProject;
 
     @FXML
-    public void initialize(){
-        File file = new File("D:/Java/Paid_Parking/Paid_Parking/out/production/Paid_Parking/about/pages/AboutSystem.html");
-        URL url= null;
+    public void initialize() {
         try {
-            url = file.toURI().toURL();
-        } catch (MalformedURLException e) {
+            webViewProject.getEngine().load(getClass().getResource("AboutSystem.html").toString());
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        webViewProject.getEngine().load(url.toString());
-        //webViewProject.getEngine().load("about/pages/AboutSystem.html");
     }
 }
